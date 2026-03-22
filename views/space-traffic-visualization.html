@@ -6,13 +6,13 @@
     <title>Space Traffic Visualization - SpaceVerse</title>
     <style>
         :root{
-            --bg: #0D1117; /* Obsidian */
-            --text: #E6F1FF; /* Starlight White */
-            --accent: #64FFDA; /* Aqua Glow */
-            --accent2: #9457EB; /* Amethyst */
-            --panel-bg: rgba(13,17,23,0.6);
-            --muted: rgba(230,241,255,0.06);
-            --muted-strong: rgba(100,255,218,0.12);
+            --bg: #060a1a;
+            --text: #e8ecf4;
+            --gold: #ffd700;
+            --blue: #00b4d8;
+            --glass: rgba(6,10,26,0.55);
+            --glass-border: rgba(255,215,0,0.08);
+            --muted: rgba(232,236,244,0.06);
         }
 
         body { 
@@ -24,75 +24,86 @@
         }
         canvas { display: block; }
         
+        /* ── CINEMATIC LOADER ── */
         #loader-container { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background-color: #0D1117; /* Obsidian */
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            flex-direction: column; 
-            z-index: 100; 
-            transition: opacity 0.5s ease; 
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            transition: opacity .6s ease;
         }
         #loader-container.hidden { opacity: 0; pointer-events: none; }
-    .loader-text { font-size: 1.5em; margin-bottom: 20px; color: var(--text); }
-        .progress-bar { 
-            width: 300px; 
-            height: 6px; 
-            background-color: var(--muted); /* subtle */
-            border-radius: 6px; 
-            overflow: hidden; 
-            box-shadow: inset 0 1px 2px rgba(148,87,235,0.04);
+        .ld-logo{
+            font-size:2.2rem;font-weight:900;letter-spacing:.4em;
+            background:linear-gradient(90deg,#fff 0%,var(--gold) 60%);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+            margin-bottom:28px;
         }
-        #progress { 
-            width: 0%; 
-            height: 100%; 
-            background: linear-gradient(90deg, var(--accent) 0%, var(--accent) 60%, var(--accent2) 100%);
-            transition: width 0.2s ease; 
-            box-shadow: 0 4px 14px rgba(100,255,218,0.12);
-        }
+        .ld-bar{width:260px;height:3px;background:rgba(255,215,0,0.12);border-radius:4px;overflow:hidden;margin-bottom:14px;}
+        #progress{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#ffaa00);border-radius:4px;transition:width .2s;}
+        .loader-text{font-size:.7rem;letter-spacing:.3em;color:rgba(255,215,0,.45);font-weight:600;}
+
+        /* ── MUSIC PLAYER ── */
+        #music-player{position:fixed;bottom:80px;right:22px;z-index:100;display:flex;align-items:center;gap:10px;background:var(--glass);backdrop-filter:blur(20px);border:1px solid var(--glass-border);border-radius:40px;padding:8px 14px 8px 10px;transition:all .3s;}
+        #music-player:hover{border-color:rgba(255,215,0,.25);box-shadow:0 4px 24px rgba(255,215,0,.08);}
+        #mus-btn{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#ffaa00);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;transition:transform .2s,box-shadow .2s;}
+        #mus-btn:hover{transform:scale(1.1);box-shadow:0 0 16px rgba(255,215,0,.4);}
+        #mus-btn.playing{animation:pulse-gold 2s ease-in-out infinite;}
+        @keyframes pulse-gold{0%,100%{box-shadow:0 0 8px rgba(255,215,0,.3)}50%{box-shadow:0 0 20px rgba(255,215,0,.7)}}
+        .mus-info{display:flex;flex-direction:column;gap:1px;}
+        .mus-title{font-size:.68rem;font-weight:700;color:var(--gold);letter-spacing:.5px;white-space:nowrap;}
+        .mus-artist{font-size:.6rem;color:rgba(232,236,244,.4);}
+        #mus-vol{width:55px;accent-color:var(--gold);height:3px;cursor:pointer;}
+        #mus-eq{display:flex;align-items:flex-end;gap:2px;height:14px;opacity:0;transition:opacity .3s;}
+        #mus-eq.active{opacity:1;}
+        .eq-bar{width:3px;background:var(--gold);border-radius:2px;}
+        #mus-eq.active .eq-bar:nth-child(1){animation:eq .6s .0s ease-in-out infinite alternate;}
+        #mus-eq.active .eq-bar:nth-child(2){animation:eq .6s .15s ease-in-out infinite alternate;}
+        #mus-eq.active .eq-bar:nth-child(3){animation:eq .6s .1s ease-in-out infinite alternate;}
+        #mus-eq.active .eq-bar:nth-child(4){animation:eq .6s .05s ease-in-out infinite alternate;}
+        @keyframes eq{from{height:3px}to{height:13px}}
         
         #info-panel { 
             position: absolute; 
             top: 20px; 
             left: -450px; 
-            width: 380px; 
+            width: 330px; 
             max-height: calc(100vh - 40px); 
-            background: rgba(13,17,23,0.6); /* slightly transparent obsidian */
-            border-radius: 15px; 
-            padding: 25px; 
-            box-shadow: 0 8px 32px 0 rgba(100,255,218,0.04); 
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px); 
-            border: 1px solid rgba(148,87,235,0.08); 
-            transition: left 0.5s ease-in-out; 
+            background: var(--glass);
+            border-radius: 16px; 
+            padding: 24px; 
+            box-shadow: 0 8px 32px rgba(0,0,0,.4);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px); 
+            border: 1px solid var(--glass-border);
+            transition: left 0.5s cubic-bezier(.4,0,.2,1); 
             overflow-y: auto; 
             z-index: 10; 
         }
         #info-panel.visible { left: 20px; }
         #info-panel h2 { 
             margin-top: 0; 
-            color: #64FFDA; 
-            font-size: 1.8em; 
-            text-align: center; 
+            color: var(--gold); 
+            font-size: 1.6em; 
+            letter-spacing:.05em;
         }
-    #info-panel p { line-height: 1.6; font-size: 0.95em; color: #E6F1FF; }
+        #info-panel p { line-height: 1.6; font-size: 0.95em; color: var(--text); }
         #close-btn { 
             position: absolute; 
             top: 15px; 
             right: 15px; 
             background: none; 
             border: none; 
-            color: #E6F1FF; 
+            color: var(--text);
             font-size: 24px; 
             cursor: pointer; 
             transition: transform 0.2s; 
         }
-        #close-btn:hover { transform: scale(1.2); color: #64FFDA; }
+        #close-btn:hover { transform: scale(1.2); color: var(--gold); }
         
         .info-item { 
             display: flex; 
@@ -109,14 +120,15 @@
             bottom: 20px; 
             left: 50%; 
             transform: translateX(-50%); 
-            background: rgba(13,17,23,0.7); 
-            border-radius: 15px; 
-            padding: 12px 18px; 
-            box-shadow: 0 8px 32px 0 rgba(100,255,218,0.04); 
-            backdrop-filter: blur(12px); 
-            border: 1px solid rgba(148,87,235,0.06); 
+            background: var(--glass);
+            border-radius: 40px; 
+            padding: 10px 20px; 
+            box-shadow: 0 4px 24px rgba(0,0,0,.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
             display: flex; 
-            gap: 22px; 
+            gap: 8px; 
             z-index: 10; 
             align-items: center;
             justify-content: center;
@@ -128,35 +140,28 @@
         
         .nav-btn { 
             background: transparent; 
-            border: 1px solid rgba(100,255,218,0.08);
-            color: #E6F1FF; 
-            padding: 10px 14px; 
-            border-radius: 8px; 
+            border: 1px solid transparent;
+            color: rgba(232,236,244,.65);
+            padding: 8px 14px; 
+            border-radius: 24px; 
             cursor: pointer; 
-            font-size: 1em; 
-            transition: all 0.18s ease; 
+            font-size: .85em; 
+            transition: all 0.2s ease; 
             white-space: nowrap;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.6);
             font-weight: 600;
+            display:flex;align-items:center;gap:6px;
         }
+        .nav-btn .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
         .nav-btn:hover { 
-            color: #64FFDA;
-            background: rgba(148,87,235,0.08);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(148,87,235,0.06);
+            color: var(--gold);
+            border-color: rgba(255,215,0,.2);
+            background: rgba(255,215,0,.04);
         }
         .nav-btn.active { 
-            color: var(--accent);
-            background-color: rgba(100,255,218,0.06);
-            border-color: var(--accent);
-            box-shadow: 0 6px 22px rgba(100,255,218,0.10);
-            animation: pulseAccent 2.5s infinite;
-        }
-
-        @keyframes pulseAccent {
-            0% { box-shadow: 0 6px 18px rgba(100,255,218,0.06); transform: translateY(0); }
-            50% { box-shadow: 0 12px 36px rgba(100,255,218,0.14); transform: translateY(-2px); }
-            100% { box-shadow: 0 6px 18px rgba(100,255,218,0.06); transform: translateY(0); }
+            color: var(--gold);
+            border-color: rgba(255,215,0,.4);
+            background: rgba(255,215,0,.08);
+            box-shadow: 0 0 16px rgba(255,215,0,.12);
         }
         
         #panel-planet-img { 
@@ -174,49 +179,44 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(13,17,23,0.85);
-            border-radius: 15px;
-            padding: 20px;
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(100,255,218,0.06);
+            background: var(--glass);
+            border-radius: 16px;
+            padding: 18px;
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            z-index:10;
+            min-width:190px;
         }
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(100, 255, 218, 0.12);
-            z-index: 10;
-            min-width: 200px;
-        }
-        
         .control-group {
-            margin-bottom: 15px;
+            margin-bottom: 14px;
         }
-        
         .control-group label {
             display: block;
-            color: #64FFDA;
+            color: var(--gold);
             margin-bottom: 5px;
-            font-size: 0.9em;
+            font-size: 0.8em;
+            letter-spacing:.03em;
         }
-        
         .control-group input[type="range"] {
             width: 100%;
+            accent-color: var(--gold);
             margin-bottom: 5px;
         }
-        
         .control-group button {
             width: 100%;
             padding: 8px;
-            background: rgba(100, 255, 218, 0.08);
-            border: 1px solid #64FFDA;
-            color: #E6F1FF;
-            border-radius: 5px;
+            background: rgba(255,215,0,.06);
+            border: 1px solid rgba(255,215,0,.25);
+            color: var(--gold);
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
+            font-size:.8rem;
+            font-family:inherit;
         }
-        
         .control-group button:hover {
-            background: rgba(100, 255, 218, 0.14);
-            color: #0D1117;
+            background: rgba(255,215,0,.14);
         }
         
         .help-tooltip {
@@ -278,20 +278,19 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(100, 255, 218, 0.06);
-            border: 2px solid #64FFDA;
-            color: #E6F1FF;
-            padding: 10px 20px;
+            background: rgba(255,215,0,.06);
+            border: 1px solid rgba(255,215,0,.25);
+            color: var(--gold);
+            padding: 8px 18px;
             border-radius: 25px;
             text-decoration: none;
             transition: all 0.3s;
             z-index: 15;
+            font-size:.82rem;font-weight:600;
         }
-        
         .back-btn:hover {
-            background: rgba(100, 255, 218, 0.14);
+            background: rgba(255,215,0,.14);
             transform: translateY(-2px);
-            color: #0D1117;
         }
         
         .quiz-btn {
@@ -434,24 +433,22 @@
         }
         
         .traffic-btn {
-            padding: 8px 12px;
-            background: rgba(100, 255, 218, 0.08);
-            border: 1px solid #64FFDA;
-            color: #E6F1FF;
-            border-radius: 5px;
+            padding: 6px 12px;
+            background: rgba(255,215,0,.06);
+            border: 1px solid rgba(255,215,0,.2);
+            color: var(--text);
+            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9em;
+            font-size: 0.82em;
         }
-        
         .traffic-btn:hover {
-            background: rgba(100, 255, 218, 0.14);
-            color: #0D1117;
+            background: rgba(255,215,0,.12);
         }
-        
         .traffic-btn.active {
-            background: #64FFDA;
-            color: #0D1117;
+            background: rgba(255,215,0,.15);
+            border-color: var(--gold);
+            color: var(--gold);
         }
         
         /* Heatmap legend */
@@ -501,8 +498,9 @@
     </div>
     
     <div id="loader-container">
-        <div class="loader-text">Loading Space Traffic Visualization...</div>
-        <div class="progress-bar"><div id="progress"></div></div>
+        <div class="ld-logo">SPACEVERSE</div>
+        <div class="ld-bar"><div id="progress"></div></div>
+        <div class="loader-text">LOADING TRAFFIC SIMULATION</div>
     </div>
     
     <div class="controls-panel">
@@ -575,6 +573,17 @@
 
     <div id="navigation-bar"></div>
 
+    <!-- Music Player -->
+    <div id="music-player">
+        <button id="mus-btn" title="Play / Pause">▶</button>
+        <div class="mus-info">
+            <div class="mus-title">Cornfield Chase</div>
+            <div class="mus-artist">Hans Zimmer · Interstellar</div>
+        </div>
+        <input id="mus-vol" type="range" min="0" max="1" step=".01" value="0.5" title="Volume">
+        <div id="mus-eq"><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div></div>
+    </div>
+
     <!-- Visual layers -->
     <div id="starfield-layer" aria-hidden="true"></div>
     <div id="vignette-layer" aria-hidden="true"></div>
@@ -637,12 +646,15 @@
             const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
             scene.add(ambientLight);
             
-            const sunLight = new THREE.PointLight(0xffffff, 3.2, 5000);
+            const sunLight = new THREE.PointLight(0xfff8e8, 1.8, 5000);
             sunLight.position.set(0, 0, 0);
-            sunLight.castShadow = true;
-            sunLight.shadow.mapSize.width = 4096;
-            sunLight.shadow.mapSize.height = 4096;
+            sunLight.castShadow = false;  // No shadow maps — avoids banding artifacts
             scene.add(sunLight);
+            const fillLight = new THREE.DirectionalLight(0x334466, 0.3);
+            fillLight.position.set(-200, 80, -200); scene.add(fillLight);
+            renderer.shadowMap.enabled = false;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 0.72;
 
             // Starfield
             const starGeometry = new THREE.BufferGeometry();
@@ -731,51 +743,52 @@
             }
             if (vignetteLayer) vignetteLayer.style.opacity = '0.6';
 
-            // Minimal music control: user-initiated Play/Pause for the Interstellar theme
-            // This is intentionally simple to avoid autoplay blocks and to be robust
-            // when users have removed other sound UI toggles.
-            (function setupMusicControl() {
-                try {
-                    const musicBtn = document.createElement('button');
-                    musicBtn.setAttribute('aria-label', 'Play Interstellar Theme');
-                    musicBtn.className = 'nav-btn';
-                    musicBtn.style.position = 'fixed';
-                    musicBtn.style.right = '18px';
-                    musicBtn.style.bottom = '18px';
-                    musicBtn.style.zIndex = 60;
-                    musicBtn.style.padding = '8px 12px';
-                    musicBtn.textContent = 'Play Music';
-
-                    const bgAudio = new Audio('/public/audio/interstellar-cornfield-chase.mp3');
-                    bgAudio.loop = true;
-                    bgAudio.preload = 'none';
-
-                    let playing = false;
-                    musicBtn.addEventListener('click', async () => {
-                        try {
-                            if (!playing) {
-                                await bgAudio.play();
-                                playing = true;
-                                musicBtn.textContent = 'Pause Music';
-                            } else {
-                                bgAudio.pause();
-                                playing = false;
-                                musicBtn.textContent = 'Play Music';
-                            }
-                        } catch (err) {
-                            // Play may be blocked or the file missing; show fallback message briefly
-                            console.warn('Music playback failed:', err);
-                            musicBtn.textContent = 'Play Music';
-                        }
-                    });
-
-                    document.body.appendChild(musicBtn);
-                } catch (e) {
-                    console.warn('Failed to create music control', e);
+            // ── MUSIC PLAYER ──
+            (()=>{
+                const audio=new Audio('/public/audio/interstellar-cornfield-chase.mp3');
+                audio.loop=true; audio.preload='none'; audio.volume=0.5;
+                const btn=document.getElementById('mus-btn');
+                const vol=document.getElementById('mus-vol');
+                const eq=document.getElementById('mus-eq');
+                let playing=false;
+                async function toggle(){
+                    try{
+                        if(!playing){await audio.play();playing=true;btn.textContent='⏸';btn.classList.add('playing');eq.classList.add('active');}
+                        else{audio.pause();playing=false;btn.textContent='▶';btn.classList.remove('playing');eq.classList.remove('active');}
+                    }catch(e){console.warn('Audio:',e);}
                 }
+                btn.onclick=toggle;
+                vol.oninput=function(){audio.volume=parseFloat(this.value);};
             })();
 
-            // Background audio and UI sound controls have been removed for a quieter experience.
+            // ── WEB AUDIO SFX ──
+            const SFX=(()=>{
+                let ctx=null;
+                function gc(){if(!ctx)ctx=new(window.AudioContext||window.webkitAudioContext)();return ctx;}
+                function play(opts={}){
+                    try{
+                        const c=gc(),osc=c.createOscillator(),g=c.createGain();
+                        osc.connect(g);g.connect(c.destination);
+                        osc.type=opts.wave||'sine';
+                        osc.frequency.setValueAtTime(opts.freq||440,c.currentTime);
+                        if(opts.sweep)osc.frequency.exponentialRampToValueAtTime(opts.sweep,c.currentTime+(opts.dur||0.15));
+                        g.gain.setValueAtTime(opts.vol||0.1,c.currentTime);
+                        g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+(opts.dur||0.15));
+                        osc.start(c.currentTime);osc.stop(c.currentTime+(opts.dur||0.15)+0.01);
+                    }catch(e){}
+                }
+                return {
+                    click:()=>play({freq:660,sweep:880,dur:.1,vol:.07}),
+                    select:()=>play({freq:440,sweep:660,dur:.18,vol:.09}),
+                    zoom:()=>play({wave:'triangle',freq:220,sweep:180,dur:.22,vol:.05}),
+                    resume:()=>{try{if(ctx&&ctx.state==='suspended')ctx.resume();}catch(e){}}
+                };
+            })();
+            // Wire SFX
+            let zoomSfxT=null;
+            document.addEventListener('wheel',()=>{SFX.resume();if(!zoomSfxT){SFX.zoom();zoomSfxT=setTimeout(()=>zoomSfxT=null,300);}},{passive:true});
+            document.getElementById('navigation-bar').addEventListener('click',()=>{SFX.resume();SFX.select();});
+            document.addEventListener('click',e=>{if(!e.target.closest('#navigation-bar,#info-panel,.controls-panel,.traffic-controls,#music-player')){SFX.resume();SFX.click();}});
 
             // Orbital periods (approx, in Earth days) and epoch for live alignment
             const orbitalPeriods = {
@@ -798,14 +811,13 @@
             let previousMousePosition = { x: 0, y: 0 };
                 // current (rendered) camera state
             let cameraTarget = new THREE.Vector3(0,0,0);
-            let cameraRadius = 200;
+            let cameraRadius = 120;   // Closer default so planets are visible immediately
             let cameraTheta = 0;
-            let cameraPhi = Math.PI / 4;
-                // desired target state (we lerp current -> desired for smoothness)
-                let desiredCameraTarget = cameraTarget.clone();
-                let desiredCameraRadius = cameraRadius;
-                let desiredCameraTheta = cameraTheta;
-                let desiredCameraPhi = cameraPhi;
+            let cameraPhi = Math.PI / 3;  // 55° tilt for orbital depth
+            let desiredCameraTarget = cameraTarget.clone();
+            let desiredCameraRadius = cameraRadius;
+            let desiredCameraTheta = cameraTheta;
+            let desiredCameraPhi = cameraPhi;
 
             // Ensure camera initial transforms come from desired state
             cameraTheta = desiredCameraTheta;
@@ -906,6 +918,35 @@
                 }
             }
             
+            // ── PLANET GLOW SPRITES ──
+            const PLANET_COLORS = {
+                sun:'#fff7aa', mercury:'#888888', venus:'#e8c07d', earth:'#4fc3f7',
+                mars:'#ef5350', jupiter:'#e0a96d', saturn:'#f4d06f', uranus:'#7fffd4', neptune:'#5c7cfa'
+            };
+            function hexToRgb(hex){
+                if(hex.length===4)hex='#'+hex[1]+hex[1]+hex[2]+hex[2]+hex[3]+hex[3];
+                const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+                return `rgb(${r},${g},${b})`;
+            }
+            function makeGlowCanvas(color){
+                const sz=128,c=document.createElement('canvas');c.width=sz;c.height=sz;
+                const ctx=c.getContext('2d'),g=ctx.createRadialGradient(sz/2,sz/2,0,sz/2,sz/2,sz/2);
+                g.addColorStop(0,color.replace(')' ,',0.55)').replace('rgb','rgba'));
+                g.addColorStop(0.4,color.replace(')' ,',0.18)').replace('rgb','rgba'));
+                g.addColorStop(1,'rgba(0,0,0,0)');
+                ctx.fillStyle=g;ctx.fillRect(0,0,sz,sz);return c;
+            }
+            function addGlow(group, key, dist, pivot){
+                try{
+                    const col=hexToRgb(PLANET_COLORS[key]||'#8888ff');
+                    const tex=new THREE.CanvasTexture(makeGlowCanvas(col));
+                    const size=key==='sun'?60:Math.max(4,(group.userData?.radius||1)*3.5);
+                    const mat=new THREE.SpriteMaterial({map:tex,blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:key==='sun'?.45:.55});
+                    const sprite=new THREE.Sprite(mat);sprite.scale.set(size,size,1);
+                    sprite.position.x=dist;pivot.add(sprite);
+                }catch(e){console.warn('Glow fail:',key,e);}
+            }
+
             function buildScene(planetArray) {
                 planetArray.forEach(data => {
                     const key = data.key;
@@ -975,7 +1016,8 @@
                                 const ringInner = (data.radius || 1) + 2;
                                 const ringOuter = (data.radius || 1) + 8;
                                 const ringGeometry = new THREE.RingGeometry(ringInner, ringOuter, 64);
-                                const ringTexture = textureLoader.load(data.ringTextureUrl);
+                                const ringPath = data.ringTextureUrl.replace('saturn_ring','saturn-ring');
+                                const ringTexture = textureLoader.load(ringPath);
                                 const ringMaterial = new THREE.MeshBasicMaterial({ 
                                     map: ringTexture, 
                                     side: THREE.DoubleSide, 
@@ -989,11 +1031,16 @@
                             }
 
                             celestialObjects.set(key, { group, orbit, pivot });
+                            addGlow(group, key, data.distance||0, pivot);
 
-                            // Create navigation button
+                            // Create navigation button with colored dot
                             const navBtn = document.createElement('button');
                             navBtn.className = 'nav-btn';
-                            navBtn.textContent = data.name;
+                            const dot = document.createElement('span');
+                            dot.className = 'dot';
+                            dot.style.background = PLANET_COLORS[key] || '#aaa';
+                            navBtn.appendChild(dot);
+                            navBtn.appendChild(document.createTextNode(data.name));
                             navBtn.dataset.key = key;
                             navBtn.addEventListener('click', () => {
                                 const obj = celestialObjects.get(key)?.group;

@@ -147,6 +147,16 @@
             margin-left: 2rem;
         }
 
+        /* ─── Smooth Skip Helper ───────── */
+        body.is-skipping-launch .launch-engine {
+            height: 0 !important;
+            min-height: 0 !important;
+            overflow: hidden !important;
+            visibility: hidden !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
         .nav-links {
             display: flex;
             gap: 2.5rem;
@@ -879,6 +889,12 @@
 </head>
 
 <body class="launch-active">
+    <script>
+        // Early skip check to prevent flicker
+        if (sessionStorage.getItem('hasSeenLaunch') === 'true') {
+            document.body.classList.add('is-skipping-launch');
+        }
+    </script>
 
     <!-- Warp Speed Overlay -->
     <div id="warp-overlay">
@@ -1345,6 +1361,15 @@
             document.body.classList.remove('launch-active');
         });
     </script>
+    <!-- Three.js + addons for Space Shuttle 3D Launch -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
     <script src="/public/js/home-launch.js"></script>
     <script src="/public/js/chat-widget.js" defer></script>
     <script>
