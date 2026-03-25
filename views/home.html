@@ -50,39 +50,56 @@
             left: 50%;
             transform: translateX(-50%);
             width: 98%;
-            /* Increased width */
             max-width: 1800px;
-            /* Increased max width */
-            /* Levitating Glass Effect */
-            background: rgba(255, 255, 255, 0.04);
-            /* Extremely faint transparent glass */
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            /* Softer bottom edge for depth */
-            border-top: 1px solid rgba(255, 255, 255, 0.25);
-            /* Sharp top highlight */
-            border-radius: 40px;
-            padding: 0.8rem 2rem;
+
+            /* Sci-Fi Geometry (Chamfered Tech Box) */
+            clip-path: polygon(25px 0, calc(100% - 25px) 0, 100% 25px, 100% calc(100% - 25px), calc(100% - 25px) 100%, 25px 100%, 0 calc(100% - 25px), 0 25px);
+
+            /* Frosty Glassmorphism */
+            background: rgba(5, 10, 20, 0.7);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+
+            padding: 0.8rem 2.5rem;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            /* Glow/Shadow to make it 'levitate' */
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 2px 20px rgba(255, 255, 255, 0.05);
+
+            /* Inner telemetry glow and structural pseudo-bordering through shadows */
+            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.15), inset 0 0 60px rgba(0, 0, 0, 0.9);
             transition: all 0.4s ease;
+            border: none;
+        }
+
+        /* Nav Brackets matching the clip-path angles perfectly */
+        .nav-bracket {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 35px;
+            background: transparent;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .nav-bracket.left {
+            left: 0;
+            border-left: 2px solid var(--neon-blue);
+            clip-path: polygon(0 25px, 25px 0, 100% 0, 100% 100%, 25px 100%, 0 calc(100% - 25px));
+            box-shadow: inset 10px 0 20px -5px rgba(0, 243, 255, 0.4);
+        }
+
+        .nav-bracket.right {
+            right: 0;
+            border-right: 2px solid var(--neon-blue);
+            clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 25px, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%);
+            box-shadow: inset -10px 0 20px -5px rgba(0, 243, 255, 0.4);
         }
 
         .navbar:hover {
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), inset 0 2px 25px rgba(255, 255, 255, 0.08);
-            /* Stronger shadow + slight internal glow to lift */
-            border-top: 1px solid rgba(255, 255, 255, 0.4);
-            /* Brighter top edge */
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.06);
-            /* Slightly more opaque glass */
+            box-shadow: inset 0 0 30px rgba(0, 243, 255, 0.25), inset 0 0 80px rgba(0, 0, 0, 0.95);
         }
 
         .logo {
@@ -178,21 +195,64 @@
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -4px;
             left: 0;
-            width: 0%;
+            width: 100%;
             height: 2px;
             background: var(--neon-blue);
             box-shadow: 0 0 10px var(--neon-blue);
-            transition: width 0.3s ease;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
         }
 
         .nav-links a:hover {
             color: #fff;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
         }
 
         .nav-links a:hover::after {
-            width: 100%;
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Scanning laser above the link */
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            width: 15px;
+            height: 2px;
+            background: #fff;
+            box-shadow: 0 0 10px #fff, 0 0 20px var(--neon-blue);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .nav-links a:hover::before {
+            opacity: 1;
+            animation: scanLaser 1s infinite linear;
+        }
+
+        @keyframes scanLaser {
+            0% {
+                left: 0%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
         }
 
         .auth-buttons {
@@ -219,13 +279,29 @@
 
         #welcomeText {
             color: var(--neon-blue);
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
             padding: 0.6rem 1.4rem;
-            background: rgba(0, 243, 255, 0.1);
-            border-radius: 30px;
-            border: 1px solid rgba(0, 243, 255, 0.4);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
+            background: rgba(0, 15, 30, 0.8);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            border-radius: 0;
+            /* Tech sharp edges */
+            box-shadow: inset 0 0 15px rgba(0, 243, 255, 0.1);
+            position: relative;
+        }
+
+        /* Terminal blinking cursor attached natively to User data string */
+        #welcomeText::after {
+            content: ' _';
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
         }
 
         #userInfo .btn-secondary {
@@ -791,6 +867,13 @@
 
             .navbar {
                 padding: 0.8rem 1.5rem;
+                clip-path: none;
+                border: 1px solid rgba(0, 243, 255, 0.3);
+                border-radius: 20px;
+            }
+
+            .nav-bracket {
+                display: none;
             }
 
             .hero h1 {
@@ -828,7 +911,10 @@
             justify-content: center;
             overflow: hidden;
         }
-        #warp-overlay.active { pointer-events: all; }
+
+        #warp-overlay.active {
+            pointer-events: all;
+        }
 
         /* Streak container */
         .warp-streaks {
@@ -836,15 +922,17 @@
             inset: 0;
             overflow: hidden;
         }
+
         .warp-streak {
             position: absolute;
-            top: 50%; left: 50%;
+            top: 50%;
+            left: 50%;
             width: 2px;
             height: 0;
             border-radius: 99px;
             transform-origin: top left;
             opacity: 0;
-            background: linear-gradient(to bottom, rgba(0,243,255,0.9), rgba(188,19,254,0.5));
+            background: linear-gradient(to bottom, rgba(0, 243, 255, 0.9), rgba(188, 19, 254, 0.5));
         }
 
         .warp-center-text {
@@ -856,7 +944,7 @@
             opacity: 0;
             z-index: 2;
             text-align: center;
-            text-shadow: 0 0 30px rgba(0,243,255,0.8);
+            text-shadow: 0 0 30px rgba(0, 243, 255, 0.8);
         }
 
         /* Special glow on the Explore Solar System card */
@@ -864,19 +952,21 @@
             position: relative;
             cursor: pointer;
         }
+
         #exploreLink::after {
             content: '';
             position: absolute;
             inset: -4px;
             border-radius: inherit;
             background: transparent;
-            border: 2px solid rgba(0,243,255,0);
+            border: 2px solid rgba(0, 243, 255, 0);
             transition: all 0.4s ease;
             pointer-events: none;
         }
+
         #exploreLink:hover::after {
-            border-color: rgba(0,243,255,0.7);
-            box-shadow: 0 0 25px rgba(0,243,255,0.35), inset 0 0 20px rgba(0,243,255,0.1);
+            border-color: rgba(0, 243, 255, 0.7);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.35), inset 0 0 20px rgba(0, 243, 255, 0.1);
         }
     </style>
     <!-- GSAP & Lenis via CDN -->
@@ -947,6 +1037,7 @@
     <canvas id="space-bg"></canvas>
 
     <nav class="navbar">
+        <div class="nav-bracket left"></div>
         <div class="logo">
             <div class="logo-icon">
                 <div class="logo-planet"></div>
@@ -971,6 +1062,7 @@
             </div>
         </div>
         <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">☰</button>
+        <div class="nav-bracket right"></div>
     </nav>
 
     <section class="hero" id="home">
@@ -1309,7 +1401,7 @@
         function updateUIForLoggedInUser(username) {
             document.getElementById('authButtons').style.display = 'none';
             document.getElementById('userInfo').style.display = 'flex';
-            document.getElementById('welcomeText').textContent = `Welcome, ${username}!`;
+            document.getElementById('welcomeText').textContent = `PILOT_ID::${username}`;
         }
 
         function updateUIForLoggedOutUser() {
@@ -1572,65 +1664,65 @@
          WARP-SPEED TRANSITION SCRIPT
          ═══════════════════════════════════════════════════════════════ -->
     <script>
-    (function() {
-        const exploreLink = document.getElementById('exploreLink');
-        if (!exploreLink || typeof gsap === 'undefined') return;
+        (function () {
+            const exploreLink = document.getElementById('exploreLink');
+            if (!exploreLink || typeof gsap === 'undefined') return;
 
-        const overlay   = document.getElementById('warp-overlay');
-        const streakBox = document.getElementById('warpStreaks');
-        const warpText  = document.getElementById('warpText');
-        const STREAK_COUNT = 80;
+            const overlay = document.getElementById('warp-overlay');
+            const streakBox = document.getElementById('warpStreaks');
+            const warpText = document.getElementById('warpText');
+            const STREAK_COUNT = 80;
 
-        // Build streaks
-        for (let i = 0; i < STREAK_COUNT; i++) {
-            const el = document.createElement('div');
-            el.className = 'warp-streak';
-            const angle = (360 / STREAK_COUNT) * i;
-            el.style.transform = `rotate(${angle}deg)`;
-            streakBox.appendChild(el);
-        }
+            // Build streaks
+            for (let i = 0; i < STREAK_COUNT; i++) {
+                const el = document.createElement('div');
+                el.className = 'warp-streak';
+                const angle = (360 / STREAK_COUNT) * i;
+                el.style.transform = `rotate(${angle}deg)`;
+                streakBox.appendChild(el);
+            }
 
-        const streaks = streakBox.querySelectorAll('.warp-streak');
+            const streaks = streakBox.querySelectorAll('.warp-streak');
 
-        exploreLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            const dest = exploreLink.getAttribute('href') + '?warp=1';
+            exploreLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                const dest = exploreLink.getAttribute('href') + '?warp=1';
 
-            overlay.classList.add('active');
+                overlay.classList.add('active');
 
-            const tl = gsap.timeline({
-                onComplete: () => window.location.href = dest
+                const tl = gsap.timeline({
+                    onComplete: () => window.location.href = dest
+                });
+
+                // Phase 1: Fade in overlay from transparent
+                tl.to(overlay, { opacity: 1, duration: 0.25, ease: 'power2.in' });
+
+                // Phase 2: Animate star streaks outward — warp effect
+                tl.to(streaks, {
+                    height: () => 20 + Math.random() * 250,
+                    opacity: () => 0.4 + Math.random() * 0.6,
+                    duration: 0.55,
+                    stagger: { each: 0.005, from: 'random' },
+                    ease: 'power3.out'
+                }, '-=0.1');
+
+                // Phase 3: Text pulse in
+                tl.to(warpText, { opacity: 1, scale: 1.08, duration: 0.4, ease: 'power2.out' }, '-=0.3');
+
+                // Phase 4: Streaks elongate wildly — hyper-jump
+                tl.to(streaks, {
+                    height: () => 400 + Math.random() * 600,
+                    opacity: 0,
+                    duration: 0.45,
+                    stagger: { each: 0.003, from: 'center' },
+                    ease: 'power4.in'
+                }, '+=0.15');
+
+                // Phase 5: Fade to full black → navigate
+                tl.to(overlay, { opacity: 1, background: '#000', duration: 0.3, ease: 'none' }, '-=0.1');
+                tl.to(warpText, { opacity: 0, duration: 0.2 }, '-=0.1');
             });
-
-            // Phase 1: Fade in overlay from transparent
-            tl.to(overlay, { opacity: 1, duration: 0.25, ease: 'power2.in' });
-
-            // Phase 2: Animate star streaks outward — warp effect
-            tl.to(streaks, {
-                height: () => 20 + Math.random() * 250,
-                opacity: () => 0.4 + Math.random() * 0.6,
-                duration: 0.55,
-                stagger: { each: 0.005, from: 'random' },
-                ease: 'power3.out'
-            }, '-=0.1');
-
-            // Phase 3: Text pulse in
-            tl.to(warpText, { opacity: 1, scale: 1.08, duration: 0.4, ease: 'power2.out' }, '-=0.3');
-
-            // Phase 4: Streaks elongate wildly — hyper-jump
-            tl.to(streaks, {
-                height: () => 400 + Math.random() * 600,
-                opacity: 0,
-                duration: 0.45,
-                stagger: { each: 0.003, from: 'center' },
-                ease: 'power4.in'
-            }, '+=0.15');
-
-            // Phase 5: Fade to full black → navigate
-            tl.to(overlay, { opacity: 1, background: '#000', duration: 0.3, ease: 'none' }, '-=0.1');
-            tl.to(warpText, { opacity: 0, duration: 0.2 }, '-=0.1');
-        });
-    })();
+        })();
     </script>
 </body>
 

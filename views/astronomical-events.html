@@ -43,35 +43,60 @@
             display: block;
         }
 
-        .navbar {
+                .navbar {
             position: fixed;
             top: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
             width: 98%;
             max-width: 1800px;
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            border-top: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 40px;
-            padding: 0.8rem 2rem;
+            
+            /* Sci-Fi Geometry (Chamfered Tech Box) */
+            clip-path: polygon(25px 0, calc(100% - 25px) 0, 100% 25px, 100% calc(100% - 25px), calc(100% - 25px) 100%, 25px 100%, 0 calc(100% - 25px), 0 25px);
+            
+            /* Frosty Glassmorphism */
+            background: rgba(5, 10, 20, 0.7);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            
+            padding: 0.8rem 2.5rem;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 2px 20px rgba(255, 255, 255, 0.05);
+            
+            /* Inner telemetry glow and structural pseudo-bordering through shadows */
+            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.15), inset 0 0 60px rgba(0, 0, 0, 0.9);
             transition: all 0.4s ease;
+            border: none;
+        }
+
+        /* Nav Brackets matching the clip-path angles perfectly */
+        .nav-bracket {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 35px;
+            background: transparent;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .nav-bracket.left {
+            left: 0;
+            border-left: 2px solid var(--neon-blue);
+            clip-path: polygon(0 25px, 25px 0, 100% 0, 100% 100%, 25px 100%, 0 calc(100% - 25px));
+            box-shadow: inset 10px 0 20px -5px rgba(0, 243, 255, 0.4);
+        }
+        .nav-bracket.right {
+            right: 0;
+            border-right: 2px solid var(--neon-blue);
+            clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 25px, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%);
+            box-shadow: inset -10px 0 20px -5px rgba(0, 243, 255, 0.4);
         }
 
         .navbar:hover {
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), inset 0 2px 25px rgba(255, 255, 255, 0.08);
-            border-top: 1px solid rgba(255, 255, 255, 0.4);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.06);
+            box-shadow: inset 0 0 30px rgba(0, 243, 255, 0.25), inset 0 0 80px rgba(0, 0, 0, 0.95);
         }
 
         .logo {
@@ -86,13 +111,65 @@
             text-transform: uppercase;
         }
 
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-planet {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle at 30% 30%, var(--neon-blue), #005b99);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.8), inset -5px -5px 10px rgba(0, 0, 0, 0.4);
+            animation: planetRotate 10s linear infinite;
+        }
+
+        .logo-ring {
+            position: absolute;
+            width: 48px;
+            height: 14px;
+            border: 2px solid var(--neon-purple);
+            border-radius: 50%;
+            transform: rotateX(70deg);
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.8);
+            animation: ringPulse 3s infinite alternate;
+        }
+
+        @keyframes planetRotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes ringPulse {
+            100% {
+                box-shadow: 0 0 25px rgba(188, 19, 254, 1);
+                border-width: 3px;
+            }
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-grow: 1;
+            margin-left: 2rem;
+        }
+
         .nav-links {
             display: flex;
-            gap: 2rem;
-            align-items: center;
+            gap: 2.5rem;
             list-style: none;
-            margin: 0;
-            padding: 0;
+            margin: 0 auto;
+        }
+
+        .nav-links li, .nav-links a {
+            display: inline-block;
         }
 
         .nav-links a {
@@ -109,39 +186,51 @@
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -4px;
             left: 0;
-            width: 0%;
+            width: 100%;
             height: 2px;
             background: var(--neon-blue);
             box-shadow: 0 0 10px var(--neon-blue);
-            transition: width 0.3s ease;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+
+        .nav-links a:hover {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
         }
 
         .nav-links a:hover::after {
-            width: 100%;
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
-        .logout-btn {
-            background: rgba(255, 77, 77, 0.08);
-            color: #ff4d4d;
-            border: 1px solid rgba(255, 77, 77, 0.3);
-            padding: 0.6rem 1.5rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* Scanning laser above the link */
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 0;
+            width: 15px;
+            height: 2px;
+            background: #fff;
+            box-shadow: 0 0 10px #fff, 0 0 20px var(--neon-blue);
+            opacity: 0;
+            transition: opacity 0.2s;
         }
 
-        .logout-btn:hover {
-            background: #ff4d4d;
-            color: white;
-            box-shadow: 0 8px 25px rgba(255, 77, 77, 0.4);
-            transform: translateY(-2px);
+        .nav-links a:hover::before {
+            opacity: 1;
+            animation: scanLaser 1s infinite linear;
+        }
+
+        @keyframes scanLaser {
+            0% { left: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 100%; opacity: 0; }
         }
 
         .container {
@@ -444,21 +533,28 @@
 </head>
 <body>
     <canvas id="space-bg"></canvas>
-    <nav class="navbar">
+        <nav class="navbar">
+        <div class="nav-bracket left"></div>
         <div class="logo">
-            <div class="logo-icon" style="font-size: 1.5rem; margin-right: 15px; display: inline-flex; vertical-align: middle;">
-                🌑
+            <div class="logo-icon">
+                <div class="logo-planet"></div>
+                <div class="logo-ring"></div>
             </div>
-            Spaceverse
+            <span>Spaceverse</span>
         </div>
-        <div class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/solar-system">Solar System</a></li>
-            <li><a href="/space-traffic-simulator">Traffic Simulator</a></li>
-            <li><a href="/mission-tracker">Mission Tracker</a></li>
-            <li><a href="/space-launches">Launch Videos</a></li>
-            <li><button class="logout-btn" onclick="logout()">Logout</button></li>
+        <div class="nav-content" id="navContent">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/">Home</a></li>
+                <li><a href="/solar-system">Solar System</a></li>
+                <li><a href="/space-traffic-simulator">Traffic</a></li>
+                <li><a href="/mission-tracker">Missions</a></li>
+                <li><a href="/space-launches">Videos</a></li>
+            </ul>
+            <div class="user-info" id="userInfo">
+                <button class="logout-btn" onclick="logout()" style="background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 0.5rem 1.2rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; transition: all 0.3s; box-shadow: 0 0 5px rgba(255,0,0,0.2);">Logout</button>
+            </div>
         </div>
+        <div class="nav-bracket right"></div>
     </nav>
 
     <div class="container">

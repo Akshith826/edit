@@ -362,14 +362,14 @@ class LaunchExperience {
 
         const mat = new THREE.PointsMaterial({
             map: this._makeGradientSprite(128,
-                ['rgba(200,210,220,0.6)', 'rgba(160,170,180,0.3)', 'rgba(100,110,120,0.1)', 'rgba(0,0,0,0)']),
-            size: 1.8,          // smaller particles = less crowding
+                ['rgba(200,210,220,0.4)', 'rgba(160,170,180,0.1)', 'rgba(100,110,120,0.02)', 'rgba(0,0,0,0)']),
+            size: 5.5,          // Massive, realistic volumetric puffs
             sizeAttenuation: true,
             transparent: true,
             blending: THREE.NormalBlending,
             depthWrite: false,
             color: 0xaabbcc,
-            opacity: 0.18,
+            opacity: 0.04,
         });
         this.smkPts = new THREE.Points(geo, mat);
         this.smkPts.renderOrder = 1;
@@ -617,7 +617,8 @@ class LaunchExperience {
         /* No gravity-turn roll — keep shuttle vertical */
 
         /* ── Particle updates ── */
-        const nozzleY = this.shuttleGroup.position.y - 2.5;
+        // Offset deep underneath the center pivot to accurately hit the actual model nozzle
+        const nozzleY = this.shuttleGroup.position.y - 6.0;
         const nozzleX = 0;
 
         // Fire
@@ -672,9 +673,9 @@ class LaunchExperience {
         this.fireLight2.intensity = fl * 7;
         this.fireLight2.position.y = glowY - 1;
 
-        /* ── Bloom strength reacts to thrust ── */
+        /* ── Bloom strength reacts accurately to thrust ── */
         if (this.bloomPass) {
-            this.bloomPass.strength = 0.8 + fl * 1.8;
+            this.bloomPass.strength = 0.5 + fl * 0.7; // Fixed severe overexposure bug
         }
 
         /* No ground mesh to update */
@@ -688,11 +689,9 @@ class LaunchExperience {
             life[i] += dt * lifeRate;
             if (life[i] >= 1) {
                 resetFn(i);
-                const ang = Math.random() * Math.PI * 2;
-                const r   = Math.random() * emitR;
-                pos[i*3]   = emitX + Math.cos(ang) * r;
-                pos[i*3+1] = emitY;
-                pos[i*3+2] = Math.sin(ang) * r;
+                pos[i*3]   += emitX;
+                pos[i*3+1] += emitY;
+                // z remains unchanged; local trajectory is handled gracefully by resetFn
                 continue;
             }
             pos[i*3]   += vel[i*3]   * dt;
@@ -706,11 +705,8 @@ class LaunchExperience {
             this.smkLifeArr[i] += dt * 0.18;
             if (this.smkLifeArr[i] >= 1) {
                 this._resetSmoke(i);
-                const ang = Math.random() * Math.PI * 2;
-                const r   = Math.random() * 1.5;
-                this.smkPosArr[i*3]   = emitX + Math.cos(ang) * r;
-                this.smkPosArr[i*3+1] = emitY;
-                this.smkPosArr[i*3+2] = Math.sin(ang) * r;
+                this.smkPosArr[i*3]   += emitX;
+                this.smkPosArr[i*3+1] += emitY;
                 continue;
             }
             this.smkPosArr[i*3]   += this.smkVelArr[i*3]   * dt;

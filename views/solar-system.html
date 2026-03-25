@@ -287,7 +287,10 @@
         .btn-gold::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: var(--neon-blue);
             z-index: -1;
             transform: scaleX(0);
@@ -327,7 +330,10 @@
         .btn-out::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: var(--neon-blue);
             z-index: -1;
             transform: scaleX(0);
@@ -1037,18 +1043,18 @@
                                         ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'emissiveMap', 'aoMap'].forEach(slot => {
                                             if (c.material[slot]) enhanceTex(c.material[slot]);
                                         });
+                                        if (key === 'saturn' && (c.name.toLowerCase().includes('ring') || (c.material.name && c.material.name.toLowerCase().includes('ring')))) {
+                                            c.material.transparent = true;
+                                            c.material.side = THREE.DoubleSide;
+                                            c.material.metalness = 0.0;
+                                            c.material.roughness = 1.0;
+                                            c.material.opacity = 0.8;
+                                        }
                                         c.material.needsUpdate = true;
                                     }
                                 }
                             });
                             g.userData = { ...d, key }; pivot.add(g); g.position.x = d.distance || 0;
-                            if (d.ringTextureUrl) {
-                                // Fix for saturn ring naming inconsistency in file system
-                                const ringPath = d.ringTextureUrl.replace('saturn_ring', 'saturn-ring');
-                                const rt = texLoader.load(ringPath, t => enhanceTex(t));
-                                const ring = new THREE.Mesh(new THREE.RingGeometry((d.radius || 1) + 2, (d.radius || 1) + 8, 64), new THREE.MeshBasicMaterial({ map: rt, side: THREE.DoubleSide, transparent: true, opacity: .85 }));
-                                ring.rotation.x = -Math.PI / 2; ring.position.x = d.distance || 0; pivot.add(ring);
-                            }
                             objs.set(key, { group: g, orbit, pivot });
                             addGlow(g, key, d.distance || 0, pivot);
                         }, undefined, () => { });

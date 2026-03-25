@@ -400,27 +400,18 @@
                     ['map','normalMap','roughnessMap','metalnessMap','emissiveMap','aoMap'].forEach(s=>{
                         if(c.material[s]) enhanceTex(c.material[s]);
                     });
+                    if (key === 'saturn' && (c.name.toLowerCase().includes('ring') || (c.material.name && c.material.name.toLowerCase().includes('ring')))) {
+                        c.material.transparent = true;
+                        c.material.side = THREE.DoubleSide;
+                        c.material.metalness = 0.0;
+                        c.material.roughness = 1.0;
+                        c.material.opacity = 0.8;
+                    }
                     c.material.needsUpdate=true;
                     c.castShadow=false; c.receiveShadow=false;
                 }
             });
             pivot.add(planetMesh);
-            /* Saturn ring support */
-            if(key==='saturn'){
-                fetch('/api/planets').then(r=>r.json()).then(data=>{
-                    const sd=data.find(p=>p.key==='saturn');
-                    if(sd&&sd.ringTextureUrl){
-                        const rp=sd.ringTextureUrl.replace('saturn_ring','saturn-ring');
-                        const rt=new THREE.TextureLoader().load(rp, enhanceTex);
-                        const ring=new THREE.Mesh(
-                            new THREE.RingGeometry(2.7,5.0,64),
-                            new THREE.MeshBasicMaterial({map:rt,side:THREE.DoubleSide,transparent:true,opacity:0.85})
-                        );
-                        ring.rotation.x=-Math.PI/2.4;
-                        pivot.add(ring);
-                    }
-                }).catch(()=>{});
-            }
             onLoaded();
         }, xhr=>{
             if(xhr.total>0) document.getElementById('ld-fill').style.width=(xhr.loaded/xhr.total*100)+'%';
