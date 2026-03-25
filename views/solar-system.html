@@ -9,16 +9,20 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@600;700;900&display=swap"
         rel="stylesheet">
     <style>
+        html {
+            font-size: 110%;
+        }
+
         :root {
-            --bg: #060a1a;
-            --text: #e8ecf4;
-            --gold: #ffd700;
-            --gold-dim: rgba(255, 215, 0, 0.12);
-            --cyan: #00b4d8;
-            --cyan-dim: rgba(0, 180, 216, 0.08);
-            --glass: rgba(8, 12, 32, 0.55);
-            --glass-border: rgba(255, 255, 255, 0.07);
-            --radius: 16px;
+            --bg: #050510;
+            --text: #e2e8f0;
+            --gold: #00f3ff;
+            --gold-dim: rgba(0, 243, 255, 0.12);
+            --cyan: #00f3ff;
+            --cyan-dim: rgba(0, 243, 255, 0.08);
+            --glass: rgba(20, 20, 40, 0.4);
+            --glass-border: rgba(0, 243, 255, 0.3);
+            --radius: 17.6px;
         }
 
         * {
@@ -39,57 +43,6 @@
             display: block;
         }
 
-        /* ── LOADER ── */
-        #loader {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 1s ease;
-        }
-
-        #loader.done {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .ld-logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 900;
-            letter-spacing: 6px;
-            background: linear-gradient(135deg, var(--gold), var(--cyan));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .ld-bar {
-            width: 260px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 18px;
-        }
-
-        #ld-fill {
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, var(--gold), var(--cyan));
-            transition: width .3s;
-        }
-
-        .ld-sub {
-            font-size: .65rem;
-            letter-spacing: 4px;
-            color: var(--cyan);
-            margin-top: 14px;
-            opacity: .7;
-        }
 
         /* ── TOP BAR ── */
         #topbar {
@@ -98,12 +51,12 @@
             left: 0;
             right: 0;
             z-index: 90;
-            height: 60px;
+            height: 66px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 30px;
-            background: linear-gradient(to bottom, rgba(6, 10, 26, .92), transparent);
+            padding: 0 33px;
+            background: linear-gradient(to bottom, rgba(5, 5, 16, .92), transparent);
             pointer-events: none;
         }
 
@@ -133,16 +86,19 @@
         }
 
         .top-btn {
-            padding: 7px 16px;
-            border-radius: 20px;
+            padding: 8px 18px;
+            border-radius: 22px;
             border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
             background: var(--glass);
             color: var(--text);
             font-size: .75rem;
             font-weight: 600;
             cursor: pointer;
             transition: all .25s;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.05);
             font-family: 'Inter', sans-serif;
         }
 
@@ -155,18 +111,20 @@
         /* ── PLANET NAV (bottom) ── */
         #planet-bar {
             position: fixed;
-            bottom: 24px;
+            bottom: 26px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 80;
             display: flex;
             gap: 4px;
-            padding: 6px 10px;
+            padding: 7px 11px;
             background: var(--glass);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
             border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, .4);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 44px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), inset 0 2px 10px rgba(255, 255, 255, 0.05);
         }
 
         .pb-item {
@@ -212,11 +170,11 @@
         /* ── HUD CARD (left info) ── */
         #hud {
             position: fixed;
-            left: 30px;
-            top: 80px;
-            width: 340px;
+            left: 33px;
+            top: 88px;
+            width: 374px;
             z-index: 50;
-            transform: translateX(-420px);
+            transform: translateX(-460px);
             opacity: 0;
             transition: all .5s cubic-bezier(.4, 0, .2, 1);
         }
@@ -228,12 +186,15 @@
 
         .hud-card {
             background: var(--glass);
-            backdrop-filter: blur(24px);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
             border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: var(--radius);
-            padding: 28px;
+            padding: 31px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 255, 255, 0.05);
         }
 
         .hud-card::before {
@@ -307,40 +268,82 @@
 
         .btn-gold {
             flex: 1;
-            padding: 11px;
-            border: none;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--gold), #ffaa00);
-            color: #000;
+            padding: 12px;
+            border: 1px solid var(--neon-blue);
+            border-radius: 9px;
+            background: transparent;
+            color: var(--neon-blue);
             font-weight: 700;
             font-size: .8rem;
             cursor: pointer;
-            transition: all .25s;
+            transition: all .4s ease;
             font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--neon-blue);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
         }
 
         .btn-gold:hover {
-            box-shadow: 0 0 24px rgba(255, 215, 0, .3);
-            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.8);
+            border-color: transparent;
+            color: #000;
+        }
+
+        .btn-gold:hover::before {
+            transform: scaleX(1);
         }
 
         .btn-out {
             flex: 1;
-            padding: 11px;
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            background: var(--glass);
-            color: var(--text);
+            padding: 12px;
+            border: 1px solid var(--neon-blue);
+            border-radius: 9px;
+            background: rgba(0, 243, 255, 0.03);
+            color: var(--neon-blue);
             font-weight: 700;
             font-size: .8rem;
             cursor: pointer;
-            transition: all .25s;
+            transition: all .4s ease;
+            backdrop-filter: blur(10px);
             font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
+        }
+
+        .btn-out::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--neon-blue);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
         }
 
         .btn-out:hover {
-            background: rgba(255, 255, 255, .06);
-            border-color: var(--cyan);
+            background: transparent;
+            border-color: transparent;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.6);
+            color: #000;
+        }
+
+        .btn-out:hover::before {
+            transform: scaleX(1);
         }
 
         .hud-close {
@@ -362,19 +365,22 @@
         /* ── CONTROLS (top-right compact) ── */
         #ctrl {
             position: fixed;
-            top: 70px;
-            right: 24px;
+            top: 77px;
+            right: 26px;
             z-index: 50;
-            width: 190px;
+            width: 209px;
         }
 
         .ctrl-card {
             background: var(--glass);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
             border: 1px solid var(--glass-border);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: var(--radius);
-            padding: 16px;
+            padding: 18px;
             transition: all .3s;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 255, 255, 0.05);
         }
 
         .ctrl-row {
@@ -428,18 +434,21 @@
         /* ── MUSIC PLAYER ── */
         #music-player {
             position: fixed;
-            bottom: 80px;
-            right: 22px;
+            bottom: 88px;
+            right: 24px;
             z-index: 100;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 11px;
             background: var(--glass);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
             border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 8px 14px 8px 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 44px;
+            padding: 9px 15px 9px 11px;
             transition: all .3s cubic-bezier(.4, 0, .2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 2px 10px rgba(255, 255, 255, 0.05);
         }
 
         #music-player:hover {
@@ -762,14 +771,6 @@
 </head>
 
 <body>
-    <!-- Loader -->
-    <div id="loader">
-        <div class="ld-logo">SPACEVERSE</div>
-        <div class="ld-bar">
-            <div id="ld-fill"></div>
-        </div>
-        <div class="ld-sub">INITIALIZING ORBITS</div>
-    </div>
 
     <!-- Top Bar -->
     <nav id="topbar">
@@ -940,8 +941,6 @@
 
             /* Loading */
             const lm = new THREE.LoadingManager();
-            lm.onProgress = (_, l, t) => { document.getElementById('ld-fill').style.width = (l / t * 100) + '%'; };
-            lm.onLoad = () => { setTimeout(() => { document.getElementById('loader').classList.add('done'); }, 600); };
             lm.onError = (u) => { console.warn('Load Error:', u); };
             const texLoader = new THREE.TextureLoader(lm);
             const glbLoader = new THREE.GLTFLoader(lm);
