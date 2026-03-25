@@ -28,7 +28,7 @@ const PORT = process.env.PORT || 5000;
 // Function to find an available port
 async function findAvailablePort(startPort) {
     const net = require('net');
-    
+
     function isPortAvailable(port) {
         return new Promise((resolve) => {
             const server = net.createServer();
@@ -120,6 +120,11 @@ app.get('/vr-working', ensureAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'vr-working.html'));
 });
 
+// Planet detail page
+app.get('/planet', ensureAuthenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'planet-detail.html'));
+});
+
 // Add our new VR diagnostic routes
 app.get('/vr-diagnostics', ensureAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'vr-diagnostics.html'));
@@ -151,11 +156,11 @@ app.use('/src', express.static('src'));
 app.use('/lib/three', express.static(path.join(__dirname, 'node_modules', 'three', 'build')));
 // Optionally expose other local libs if needed in future
 // Prefer any local public lib overrides first (useful for CI/local fallbacks)
-app.use('/lib/fiber', express.static(path.join(__dirname, 'public','lib','fiber')));
-app.use('/lib/xr', express.static(path.join(__dirname, 'public','lib','xr')));
+app.use('/lib/fiber', express.static(path.join(__dirname, 'public', 'lib', 'fiber')));
+app.use('/lib/xr', express.static(path.join(__dirname, 'public', 'lib', 'xr')));
 // Then fall back to node_modules dist if present
-app.use('/lib/fiber', express.static(path.join(__dirname, 'node_modules', '@react-three', 'fiber','dist')));
-app.use('/lib/xr', express.static(path.join(__dirname, 'node_modules', '@react-three', 'xr','dist')));
+app.use('/lib/fiber', express.static(path.join(__dirname, 'node_modules', '@react-three', 'fiber', 'dist')));
+app.use('/lib/xr', express.static(path.join(__dirname, 'node_modules', '@react-three', 'xr', 'dist')));
 app.use(express.static('views'));
 
 // Include reviews route (after session middleware)
@@ -182,7 +187,7 @@ async function initializeDatabase() {
             dbConnected = true;
             console.log('MongoDB connection established successfully.');
             console.log('Connected to:', uri.includes('mongodb+srv') ? 'MongoDB Atlas' : 'Local MongoDB');
-            
+
             // Only insert enhanced data when we have a live DB connection
             if (typeof insertEnhancedPlanetData === 'function') {
                 try {
@@ -212,10 +217,10 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
-    quizScores: [{ 
-        score: Number, 
-        totalQuestions: Number, 
-        completedAt: { type: Date, default: Date.now } 
+    quizScores: [{
+        score: Number,
+        totalQuestions: Number,
+        completedAt: { type: Date, default: Date.now }
     }]
 });
 
@@ -255,27 +260,27 @@ const J2000 = Date.UTC(2000, 0, 1, 12, 0, 0);
 app.post('/api/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
-        
+
         // Check if user already exists
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
             return res.status(400).json({ error: 'User already exists' });
         }
-        
+
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
-        
+
         // Create new user
         const user = new User({
             username,
             email,
             password: hashedPassword
         });
-        
+
         await user.save();
         req.session.userId = user._id;
         req.session.username = user.username;
-        
+
         res.json({ success: true, message: 'User registered successfully' });
     } catch (error) {
         res.status(500).json({ error: 'Registration failed' });
@@ -285,22 +290,22 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        
+
         // Find user
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-        
+
         // Check password
         const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
-        
+
         req.session.userId = user._id;
         req.session.username = user.username;
-        
+
         res.json({ success: true, message: 'Login successful', username: user.username });
     } catch (error) {
         res.status(500).json({ error: 'Login failed' });
@@ -326,13 +331,13 @@ app.post('/api/quiz/submit', async (req, res) => {
         if (!req.session.userId) {
             return res.status(401).json({ error: 'Please login first' });
         }
-        
+
         const { score, totalQuestions } = req.body;
-        
+
         const user = await User.findById(req.session.userId);
         user.quizScores.push({ score, totalQuestions });
         await user.save();
-        
+
         res.json({ success: true, message: 'Quiz score saved' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to save quiz score' });
@@ -344,7 +349,7 @@ app.get('/api/quiz/scores', async (req, res) => {
         if (!req.session.userId) {
             return res.status(401).json({ error: 'Please login first' });
         }
-        
+
         const user = await User.findById(req.session.userId);
         res.json({ scores: user.quizScores });
     } catch (error) {
@@ -521,7 +526,7 @@ app.get('/api/planets/:key/quiz', async (req, res) => {
     try {
         const planetKey = req.params.key;
         const planet = await Planet.findOne({ key: planetKey });
-        
+
         if (!planet) {
             return res.status(404).json({ error: 'Planet not found' });
         }
@@ -544,7 +549,7 @@ Format:
                     model: 'gemini-2.5-flash',
                     contents: prompt,
                 });
-                
+
                 let text = response.text;
                 // Clean up any potential markdown formatting from the response
                 if (text.startsWith('\`\`\`json')) {
@@ -552,9 +557,9 @@ Format:
                 } else if (text.startsWith('\`\`\`')) {
                     text = text.replace(/^\`\`\`/, '').replace(/\`\`\`$/, '').trim();
                 }
-                
+
                 const generatedQuestions = JSON.parse(text);
-                
+
                 if (Array.isArray(generatedQuestions) && generatedQuestions.length > 0) {
                     return res.json({ questions: generatedQuestions });
                 }
@@ -581,7 +586,7 @@ Format:
 // Enhanced Planet Data with Quiz Questions
 const insertEnhancedPlanetData = async () => {
     await Planet.deleteMany({});
-    
+
     const enhancedPlanets = [
         {
             key: "sun",
@@ -1015,7 +1020,7 @@ const insertEnhancedPlanetData = async () => {
             ]
         }
     ];
-    
+
     await Planet.insertMany(enhancedPlanets);
     console.log('Enhanced planet data with textures and markers inserted!');
 };
