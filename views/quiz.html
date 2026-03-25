@@ -19,13 +19,189 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        /* ── GLOBAL NAVBAR CSS ── */
+        .navbar {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 98%;
+            max-width: 1800px;
+            clip-path: polygon(25px 0, calc(100% - 25px) 0, 100% 25px, 100% calc(100% - 25px), calc(100% - 25px) 100%, 25px 100%, 0 calc(100% - 25px), 0 25px);
+            background: rgba(5, 10, 20, 0.7);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            padding: 0.8rem 2.5rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.15), inset 0 0 60px rgba(0, 0, 0, 0.9);
+            border: none;
+        }
+
+        .nav-bracket {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 35px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .nav-bracket.left {
+            left: 0;
+            border-left: 2px solid var(--neon-blue);
+            clip-path: polygon(0 25px, 25px 0, 100% 0, 100% 100%, 25px 100%, 0 calc(100% - 25px));
+            box-shadow: inset 10px 0 20px -5px rgba(0, 243, 255, 0.4);
+        }
+
+        .nav-bracket.right {
+            right: 0;
+            border-right: 2px solid var(--neon-blue);
+            clip-path: polygon(0 0, calc(100% - 25px) 0, 100% 25px, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%);
+            box-shadow: inset -10px 0 20px -5px rgba(0, 243, 255, 0.4);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--neon-blue);
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.6);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            text-decoration: none;
+            text-transform: uppercase;
+        }
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-planet {
+            width: 25px;
+            height: 25px;
+            background: radial-gradient(circle at 30% 30%, var(--neon-blue), #005b99);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.8), inset -5px -5px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-grow: 1;
+            margin-left: 2rem;
+        }
+        .nav-links {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            margin: 0;
+        }
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(0, 243, 255, 0.8); }
+
+        /* ── BUTTON FEATURE CSS (V5 Pure Glassmorphism) ── */
+        .btn-feature {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05); /* very light white wash */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* subtle border */
+            border-top: 1px solid rgba(255, 255, 255, 0.2); /* top highlight */
+            border-radius: 24px; /* smooth pill */
+            padding: 1.5rem;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+            backdrop-filter: blur(16px) saturate(150%);
+            -webkit-backdrop-filter: blur(16px) saturate(150%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); /* basic shadow */
+            cursor: pointer;
+        }
+
+        .btn-feature::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-feature .btn-icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            transition: transform 0.4s ease;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+            z-index: 2;
+        }
+
+        .btn-feature .btn-text {
+            font-family: 'Inter', sans-serif;
+            color: #ffffff;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+            z-index: 2;
+        }
+
+        .btn-feature.selected,
+        .btn-feature:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            /* Massive blue bloom on hover for V5 aesthetic */
+            box-shadow: 0 0 30px #00f3ff, inset 0 0 15px rgba(0, 243, 255, 0.2);
+            border: 1px solid #00f3ff;
+            border-top: 1px solid #00f3ff;
+        }
+
+        .btn-feature.selected::after,
+        .btn-feature:hover::after {
+            left: 100%;
+        }
+
+        .btn-feature.selected .btn-icon,
+        .btn-feature:hover .btn-icon {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 20px #00f3ff);
+        }
+
+        .btn-feature.selected .btn-text,
+        .btn-feature:hover .btn-text {
+            text-shadow: 0 0 12px #00f3ff;
+        }
         
         body { 
             font-family: 'Inter', sans-serif; 
             background: #000;
             color: #fff; 
             min-height: 100vh;
-            padding: 80px 2rem 2rem;
+            padding: 120px 2rem 2rem;
+
             overflow-x: hidden;
             position: relative;
         }
@@ -139,64 +315,9 @@
         
         .planet-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1.2rem;
-            margin-top: 1rem;
-        }
-        
-        .planet-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2rem 1rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .planet-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            transition: 0.5s;
-        }
-
-        .planet-card:hover::after {
-            left: 100%;
-        }
-
-        .planet-card:hover {
-            transform: translateY(-10px) scale(1.05);
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--neon-blue);
-            box-shadow: 0 10px 30px rgba(0, 243, 255, 0.2);
-        }
-        
-        .planet-card.selected {
-            background: rgba(0, 243, 255, 0.1);
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.3);
-        }
-        
-        .planet-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
-        }
-        
-        .planet-card div:last-child {
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
         }
 
         .quiz-section {
@@ -452,11 +573,29 @@
 </head>
 <body>
     <canvas id="space-bg"></canvas>
-    <a href="/" class="back-btn">🌑 Back to Home</a>
+    <!-- Global Glassmorphism Navbar -->
+    <nav class="navbar">
+        <div class="nav-bracket left"></div>
+        <a href="/" class="logo">
+            <div class="logo-icon">
+                <div class="logo-planet"></div>
+            </div>
+            <span>Spaceverse</span>
+        </a>
+        <div class="nav-content" id="navContent">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="/solar-system">Overview</a></li>
+                <li><a href="/vr-solar-system">VR Explorer</a></li>
+                <li><a href="/space-launches">Launches</a></li>
+            </ul>
+            <a href="/" class="nav-back-btn" style="background: rgba(0,243,255,0.15); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #00f3ff; color: #00f3ff; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0,243,255,0.3); text-decoration: none; display: inline-block; margin-right: 15px; transition: all 0.3s ease;" onmouseover="this.style.background='#00f3ff'; this.style.color='#000'; this.style.boxShadow='0 0 20px #00f3ff';" onmouseout="this.style.background='rgba(0,243,255,0.15)'; this.style.color='#00f3ff'; this.style.boxShadow='0 0 10px rgba(0,243,255,0.3)';">⬅ Back to Home</a>
+        </div>
+        <div class="nav-bracket right"></div>
+    </nav>
     
     <div class="quiz-container">
         <div class="quiz-header">
-            <h1>🤖 Spaceverse Quiz Bot</h1>
+            <h1 id="quizBotTitle">🤖 Spaceverse Quiz Bot</h1>
             <div class="quiz-bot">
                 <div class="bot-avatar">🤖</div>
                 <div class="bot-message">
@@ -469,25 +608,59 @@
         <div id="planetSelection" class="planet-selector">
             <h2>Choose a Planet to Quiz About:</h2>
             <div class="planet-grid">
-                <div class="planet-card" data-planet="sun">
-                    <div class="planet-icon">☀️</div>
-                    <div>Sun</div>
+                <div class="btn-feature planet-card" data-planet="sun" style="--glow-color: #ffb703;">
+                    <div class="btn-icon">☀️</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Sun</span>
+                    </div>
                 </div>
-                <div class="planet-card" data-planet="mercury">
-                    <div class="planet-icon">☿️</div>
-                    <div>Mercury</div>
+                <div class="btn-feature planet-card" data-planet="mercury" style="--glow-color: #a3a3a3;">
+                    <div class="btn-icon">🌑</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Mercury</span>
+                    </div>
                 </div>
-                <div class="planet-card" data-planet="venus">
-                    <div class="planet-icon">♀️</div>
-                    <div>Venus</div>
+                <div class="btn-feature planet-card" data-planet="venus" style="--glow-color: #ff9e43;">
+                    <div class="btn-icon">🌕</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Venus</span>
+                    </div>
                 </div>
-                <div class="planet-card" data-planet="earth">
-                    <div class="planet-icon">🌍</div>
-                    <div>Earth</div>
+                <div class="btn-feature planet-card" data-planet="earth" style="--glow-color: #00f3ff;">
+                    <div class="btn-icon">🌍</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Earth</span>
+                    </div>
                 </div>
-                <div class="planet-card" data-planet="mars">
-                    <div class="planet-icon">♂️</div>
-                    <div>Mars</div>
+                <div class="btn-feature planet-card" data-planet="mars" style="--glow-color: #ff3b3b;">
+                    <div class="btn-icon">🔴</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Mars</span>
+                    </div>
+                </div>
+                <div class="btn-feature planet-card" data-planet="jupiter" style="--glow-color: #ffb703;">
+                    <div class="btn-icon">🟠</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Jupiter</span>
+                    </div>
+                </div>
+                <div class="btn-feature planet-card" data-planet="saturn" style="--glow-color: #fce883;">
+                    <div class="btn-icon">🪐</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Saturn</span>
+                    </div>
+                </div>
+                <div class="btn-feature planet-card" data-planet="uranus" style="--glow-color: #8ed8f8;">
+                    <div class="btn-icon">🌀</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Uranus</span>
+                    </div>
+                </div>
+                <div class="btn-feature planet-card" data-planet="neptune" style="--glow-color: #2b74ba;">
+                    <div class="btn-icon">🔵</div>
+                    <div class="btn-text">
+                        <span class="btn-title">Neptune</span>
+                    </div>
                 </div>
             </div>
             <div class="quiz-controls">
@@ -553,6 +726,9 @@
         let userAnswers = [];
         let score = 0;
 
+        let currentPlanetName = '';
+        let currentPlanetEmoji = '';
+
         // Planet selection
         document.querySelectorAll('.planet-card').forEach(card => {
             card.addEventListener('click', function() {
@@ -561,29 +737,125 @@
                 currentPlanet = this.dataset.planet;
                 document.getElementById('startQuizBtn').disabled = false;
                 
-                const planetName = this.textContent.trim();
-                document.getElementById('botMessage').textContent = `Great choice! Ready to test your knowledge about ${planetName}?`;
+                const btnTitle = this.querySelector('.btn-title');
+                if (btnTitle) currentPlanetName = btnTitle.textContent.trim();
+                
+                const btnIcon = this.querySelector('.btn-icon');
+                if (btnIcon) currentPlanetEmoji = btnIcon.textContent.trim();
+                
+                document.getElementById('botMessage').textContent = `Great choice! Ready to test your knowledge about ${currentPlanetName}?`;
             });
         });
 
+        const PLANET_QUESTIONS = {
+            sun: [
+                { question: "What is the primary element composing the Sun?", options: ["Oxygen", "Carbon", "Helium", "Hydrogen"], correctAnswer: 3 },
+                { question: "What is the surface temperature of the Sun?", options: ["~5,500°C", "~10,000°C", "~2,000°C", "~15,000°C"], correctAnswer: 0 },
+                { question: "How long does it take sunlight to reach Earth?", options: ["Instantaneous", "8 minutes", "1 hour", "24 hours"], correctAnswer: 1 },
+                { question: "What type of star is the Sun?", options: ["Red Dwarf", "White Dwarf", "G-type main-sequence", "Blue Giant"], correctAnswer: 2 },
+                { question: "What phenomenon causes solar flares?", options: ["Nuclear fusion breakdown", "Magnetic field tangling", "Asteroid impacts", "Solar wind collisions"], correctAnswer: 1 },
+                { question: "Approximately how much of the solar system's mass is in the Sun?", options: ["50%", "75%", "90%", "99.8%"], correctAnswer: 3 },
+                { question: "What is the outermost layer of the Sun's atmosphere called?", options: ["Photosphere", "Chromosphere", "Corona", "Radiative Zone"], correctAnswer: 2 },
+                { question: "How old is the Sun estimated to be?", options: ["1 billion years", "4.6 billion years", "10 billion years", "14 billion years"], correctAnswer: 1 }
+            ],
+            mercury: [
+                { question: "Which planet is closest to the Sun?", options: ["Venus", "Earth", "Mercury", "Mars"], correctAnswer: 2 },
+                { question: "Does Mercury have any moons?", options: ["Yes, 1", "Yes, 2", "No", "Yes, 4"], correctAnswer: 2 },
+                { question: "Why does Mercury have extreme temperature fluctuations?", options: ["It has a thick atmosphere", "It has no atmosphere to trap heat", "Internal volcanic activity", "Its orbit is perfectly circular"], correctAnswer: 1 },
+                { question: "How long is a year on Mercury?", options: ["88 Earth days", "365 Earth days", "225 Earth days", "687 Earth days"], correctAnswer: 0 },
+                { question: "Mercury is the smallest planet in our solar system.", options: ["True", "False", "Only by mass, not volume", "It's the same size as Mars"], correctAnswer: 0 },
+                { question: "What spacecraft became the first to orbit Mercury?", options: ["Voyager 1", "Mariner 10", "MESSENGER", "New Horizons"], correctAnswer: 2 },
+                { question: "Mercury's surface closely resembles the surface of which other body?", options: ["Earth", "Mars", "Earth's Moon", "Venus"], correctAnswer: 2 },
+                { question: "What is Mercury's core primarily composed of?", options: ["Silicate rock", "Liquid water", "Solid ice", "Iron"], correctAnswer: 3 }
+            ],
+            venus: [
+                { question: "Why is Venus the hottest planet in our solar system?", options: ["It's closest to the Sun", "Runaway greenhouse effect", "Active volcanoes", "High internal radiation"], correctAnswer: 1 },
+                { question: "Which way does Venus rotate on its axis compared to most other planets?", options: ["The same way", "Retrograde (opposite)", "It doesn't rotate", "Perpendicularly"], correctAnswer: 1 },
+                { question: "What is the primary gas in Venus's atmosphere?", options: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Methane"], correctAnswer: 2 },
+                { question: "Venus is often referred to as Earth's:", options: ["Twin", "Moon", "Parent", "Nothing"], correctAnswer: 0 },
+                { question: "What are the clouds on Venus primarily made of?", options: ["Water vapor", "Methane", "Sulfuric acid", "Ammonia"], correctAnswer: 2 },
+                { question: "How does the atmospheric pressure on Venus compare to Earth's?", options: ["It's about the same", "It's 10 times less", "It's 90 times greater", "It varies wildly"], correctAnswer: 2 },
+                { question: "Which Soviet probe was the first to successfully land on Venus and transmit data?", options: ["Sputnik 1", "Venera 7", "Luna 2", "Mars 3"], correctAnswer: 1 },
+                { question: "How long does a 'day' (one rotation) on Venus last compared to an 'year' (one orbit)?", options: ["Shorter than a year", "Exactly the same", "Longer than a year", "Half a year"], correctAnswer: 2 }
+            ],
+            earth: [
+                { question: "What percentage of Earth's surface is covered by water?", options: ["50%", "60%", "71%", "85%"], correctAnswer: 2 },
+                { question: "What is Earth's primary atmospheric gas?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"], correctAnswer: 2 },
+                { question: "How old is Earth?", options: ["~1 billion years", "~4.5 billion years", "~10 million years", "~14 billion years"], correctAnswer: 1 },
+                { question: "Earth is the only planet known to have:", options: ["Moons", "Rings", "Liquid water on the surface", "An atmosphere"], correctAnswer: 2 },
+                { question: "What causes Earth's seasons?", options: ["Distance from the Sun", "The Moon's gravity", "Ocean currents", "The tilt of its rotational axis"], correctAnswer: 3 },
+                { question: "What is the densest planet in the Solar System?", options: ["Jupiter", "Mercury", "Earth", "Saturn"], correctAnswer: 2 },
+                { question: "Which layer of the Earth creates its magnetic field?", options: ["Crust", "Mantle", "Outer Core", "Inner Core"], correctAnswer: 2 },
+                { question: "Earth is located in which habitable zone region around the Sun?", options: ["The Goldilocks Zone", "The Twilight Zone", "The Hot Zone", "The Kuiper Belt"], correctAnswer: 0 }
+            ],
+            mars: [
+                { question: "Why is Mars called the Red Planet?", options: ["Lava oceans", "Iron oxide (rust) on its surface", "Red clouds", "Refraction from the Sun"], correctAnswer: 1 },
+                { question: "What is the name of the largest volcano on Mars?", options: ["Mount Everest", "Olympus Mons", "Mauna Kea", "Valles Marineris"], correctAnswer: 1 },
+                { question: "How many moons does Mars have?", options: ["0", "1", "2", "4"], correctAnswer: 2 },
+                { question: "What are the names of Mars's moons?", options: ["Io & Europa", "Titan & Rhea", "Phobos & Deimos", "Triton & Nereid"], correctAnswer: 2 },
+                { question: "What state of water has been confirmed to exist on Mars?", options: ["Vast liquid oceans", "Only steam", "Water ice at the poles", "None"], correctAnswer: 2 },
+                { question: "Which rover successfully landed on Mars in 2021?", options: ["Curiosity", "Spirit", "Opportunity", "Perseverance"], correctAnswer: 3 },
+                { question: "The atmosphere on Mars is primarily composed of:", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Helium"], correctAnswer: 1 },
+                { question: "Mars has a giant canyon system called:", options: ["The Grand Canyon", "Olympus Mons", "Valles Marineris", "Hellas Planitia"], correctAnswer: 2 }
+            ],
+            jupiter: [
+                { question: "Jupiter is known as a:", options: ["Terrestrial planet", "Gas giant", "Ice giant", "Dwarf planet"], correctAnswer: 1 },
+                { question: "What is the Great Red Spot on Jupiter?", options: ["A massive volcano", "A giant impact crater", "A persistent high-pressure storm", "A solid island of iron"], correctAnswer: 2 },
+                { question: "Which of these is NOT one of Jupiter's Galilean moons?", options: ["Io", "Europa", "Titan", "Ganymede"], correctAnswer: 2 },
+                { question: "Which is the largest moon in the Solar System, orbiting Jupiter?", options: ["Titan", "Callisto", "Ganymede", "Triton"], correctAnswer: 2 },
+                { question: "Jupiter has roughly how much mass compared to all other planets combined?", options: ["Half as much", "About the same", "Twice as much", "Ten times as much"], correctAnswer: 2 },
+                { question: "What is Jupiter's approximate composition?", options: ["Mostly rocks and metals", "Mostly methane and ammonia", "Mostly hydrogen and helium", "Mostly water and carbon dioxide"], correctAnswer: 2 },
+                { question: "Does Jupiter have rings?", options: ["No, only Saturn has rings", "Yes, a faint ring system", "Yes, thicker than Saturn's", "It used to, but lost them"], correctAnswer: 1 },
+                { question: "Which spacecraft deliberately plunged into Jupiter's atmosphere in 2003?", options: ["Cassini", "Voyager 2", "Galileo", "Juno"], correctAnswer: 2 }
+            ],
+            saturn: [
+                { question: "Saturn is most famous for its:", options: ["Red color", "Extreme heat", "Prominent ring system", "Lack of moons"], correctAnswer: 2 },
+                { question: "What are Saturn's rings primarily made of?", options: ["Solid sheets of gold", "Chunks of water ice and rock", "Gaseous clouds", "Plasma"], correctAnswer: 1 },
+                { question: "Which is Saturn's largest moon, known for having a dense atmosphere?", options: ["Europa", "Ganymede", "Titan", "Enceladus"], correctAnswer: 2 },
+                { question: "Saturn is the least dense planet in the solar system. What would happen if you placed it in a colossal body of water?", options: ["It would sink instantly", "It would dissolve", "It would float", "It would explode"], correctAnswer: 2 },
+                { question: "Beside Jupiter, Saturn is the only other:", options: ["Terrestrial planet", "Gas giant", "Ice giant", "Dwarf planet"], correctAnswer: 1 },
+                { question: "Which spacecraft studied Saturn extensively for 13 years before diving into its atmosphere in 2017?", options: ["Voyager 1", "Pioneer 11", "Galileo", "Cassini"], correctAnswer: 3 },
+                { question: "What shape is the massive storm pattern permanently fixed at Saturn's north pole?", options: ["Circle", "Square", "Hexagon", "Triangle"], correctAnswer: 2 },
+                { question: "Saturn's moon Enceladus is famous for having:", options: ["A methane ocean", "Geysers shooting water ice into space", "Volcanoes erupting lava", "A dense nitrogen atmosphere"], correctAnswer: 1 }
+            ],
+            uranus: [
+                { question: "Uranus is uniquely known for its:", options: ["Extreme tilt, rotating on its side", "Massive red spot", "Proximity to the Sun", "Perfectly upright rotation"], correctAnswer: 0 },
+                { question: "What classification does Uranus fall under?", options: ["Gas giant", "Ice giant", "Terrestrial planet", "Dwarf planet"], correctAnswer: 1 },
+                { question: "Why does Uranus appear light blue?", options: ["Reflected oceans", "Methane in the upper atmosphere absorbing red light", "High concentrations of oxygen", "Frozen nitrogen"], correctAnswer: 1 },
+                { question: "Who discovered Uranus in 1781?", options: ["Galileo Galilei", "Isaac Newton", "William Herschel", "Johannes Kepler"], correctAnswer: 2 },
+                { question: "How many known rings does Uranus have?", options: ["0", "3", "13", "100+"], correctAnswer: 2 },
+                { question: "What is the only spacecraft to have visited Uranus?", options: ["Voyager 1", "Voyager 2", "Cassini", "New Horizons"], correctAnswer: 1 },
+                { question: "What are the names of Uranus's moons mostly derived from?", options: ["Greek mythology", "Roman gods", "Characters from William Shakespeare and Alexander Pope", "Discoverer's family members"], correctAnswer: 2 },
+                { question: "A single 'day' near Uranus's poles (constant sunlight or darkness) lasts roughly how many Earth years?", options: ["1 year", "14 years", "42 years", "84 years"], correctAnswer: 2 }
+            ],
+            neptune: [
+                { question: "What is the farthest known planet from the Sun?", options: ["Uranus", "Saturn", "Neptune", "Pluto (if counting dwarfs)"], correctAnswer: 2 },
+                { question: "Neptune is named after the Roman god of the:", options: ["Underworld", "Sea", "Sky", "War"], correctAnswer: 1 },
+                { question: "Which moon of Neptune is large and orbits in the opposite direction of the planet's rotation (retrograde)?", options: ["Triton", "Proteus", "Nereid", "Despina"], correctAnswer: 0 },
+                { question: "Neptune was discovered not just by observation, but first by:", options: ["Mathematical prediction of its gravitational effects", "Hearing radio signals", "Stumbling upon it accidentally", "Ancient scrolls"], correctAnswer: 0 },
+                { question: "What are the wind speeds on Neptune like compared to the rest of the solar system?", options: ["The slowliest", "Average", "The fastest, reaching over 2,000 km/h", "Nil, there is no wind"], correctAnswer: 2 },
+                { question: "Like Uranus, Neptune's deep blue color is largely due to:", options: ["Liquid water oceans", "Methane gas", "Cobalt dust", "Iron oxide"], correctAnswer: 1 },
+                { question: "What dark weather feature was observed on Neptune by Voyager 2, analogous to Jupiter's Great Red Spot?", options: ["The Great Dark Spot", "The Deep Blue Eye", "Neptune's Vortex", "The Abyss"], correctAnswer: 0 },
+                { question: "A year on Neptune takes approximately how many Earth years?", options: ["84 years", "165 years", "248 years", "12 years"], correctAnswer: 1 }
+            ]
+        };
+
         // Start quiz
-        document.getElementById('startQuizBtn').addEventListener('click', async function() {
+        document.getElementById('startQuizBtn').addEventListener('click', function() {
             if (!currentPlanet) return;
             
-            try {
-                const response = await fetch(`/api/planets/${currentPlanet}/quiz`);
-                const data = await response.json();
-                
-                if (data.questions && data.questions.length > 0) {
-                    questions = data.questions;
-                    userAnswers = new Array(questions.length).fill(null);
-                    startQuiz();
-                } else {
-                    alert('No quiz questions available for this planet yet!');
-                }
-            } catch (error) {
-                alert('Failed to load quiz questions. Please try again.');
+            const bank = PLANET_QUESTIONS[currentPlanet];
+            if (!bank || bank.length === 0) {
+                alert('No quiz questions available for this planet yet!');
+                return;
             }
+            
+            // Randomly select 5 questions from the bank
+            const shuffled = [...bank].sort(() => 0.5 - Math.random());
+            questions = shuffled.slice(0, 5);
+            userAnswers = new Array(questions.length).fill(null);
+            
+            startQuiz();
         });
 
         function startQuiz() {
@@ -591,6 +863,11 @@
             document.getElementById('quizSection').classList.add('active');
             document.getElementById('totalQuestions').textContent = questions.length;
             document.getElementById('botMessage').textContent = "Let's test your space knowledge! Take your time and think carefully.";
+            
+            const titleElem = document.getElementById('quizBotTitle');
+            if (titleElem && currentPlanetName) {
+                titleElem.innerHTML = `${currentPlanetEmoji} ${currentPlanetName} Quiz`;
+            }
             
             currentQuestionIndex = 0;
             score = 0;
