@@ -329,63 +329,92 @@ function calculateCollisionProbability(object1, object2) {
 }
 
 /**
- * Calculate orbital density considering perturbations
+ * Calculate orbital density considering perturbations.
+ * When `realCounts` is provided (from CelesTrak), density is derived from
+ * actual object counts instead of hardcoded baseline values.
+ *
  * @param {number} altitude - Altitude in km
  * @param {number} inclination - Inclination in degrees
  * @param {Object} timeParams - Time parameters {startDate, endDate}
+ * @param {Object|null} realCounts - Optional real counts from CelesTrak
+ *   { leoCount, meoCount, geoCount }
  * @returns {Object} Density analysis {baseDensity, perturbedDensity, variationFactors}
  */
-function calculatePerturbedOrbitalDensity(altitude, inclination, timeParams) {
-    // Base density calculation (similar to existing model)
-    let baseDensity = 0.1;
-    let orbitType = 'LEO';
-    
-    if (altitude < 2000) {
-        orbitType = 'LEO';
-        baseDensity = 0.45;
-    } else if (altitude < 35786) {
-        orbitType = 'MEO';
-        baseDensity = 0.15;
+function calculatePerturbedOrbitalDensity(altitude, inclination, timeParams, realCounts) {
+  // ------------------------------------------------------------------
+  // Base density — use real counts if available, otherwise hardcoded
+  // ------------------------------------------------------------------
+  let baseDensity = 0.1;
+  let orbitType = 'LEO';
+
+  if (altitude < 2000) {
+    orbitType = 'LEO';
+    if (realCounts && realCounts.leoCount > 0) {
+      // Normalise: LEO band spans 0–2000 km. We express density as
+      // objects per 100 km altitude band, then scale to a 0–1 range
+      // relative to a congested reference (5 000 objects → density 1.0).
+      const REFERENCE_LEO_COUNT = 5000;
+      baseDensity = Math.min(1.0, (realCounts.leoCount / REFERENCE_LEO_COUNT));
     } else {
-        orbitType = 'GEO';
-        baseDensity = 0.05;
+      baseDensity = 0.45;
     }
-    
-    // Adjust for inclination clustering
-    const inclinationFactor = 1 - Math.abs(inclination - 90) / 90 * 0.3;
-    
-    // Adjust for altitude within orbital band
-    let altitudeFactor = 1;
-    if (orbitType === 'LEO') {
-        altitudeFactor = 1 - Math.pow((altitude - 550) / 1000, 2);
-    } else if (orbitType === 'GEO') {
-        altitudeFactor = 1.2;
+  } else if (altitude < 35786) {
+    orbitType = 'MEO';
+    if (realCounts && realCounts.meoCount > 0) {
+      const REFERENCE_MEO_COUNT = 600;
+      baseDensity = Math.min(1.0, (realCounts.meoCount / REFERENCE_MEO_COUNT));
+    } else {
+      baseDensity = 0.15;
     }
-    
-    // Perturbation factors
-    const perturbationFactors = {
-        j2Effect: 1 + J2_EARTH * Math.sin(inclination * Math.PI / 180),
-        atmosphericDrag: orbitType === 'LEO' ? 1 + (1000 - altitude) / 1000 * 0.2 : 1,
-        solarRadiationPressure: 1 + 0.05 * Math.sin(Date.now() / 86400000), // Daily variation
-        lunarGravity: 1 + 0.02 * Math.sin(Date.now() / 2592000000) // Monthly variation
-    };
-    
-    // Combined perturbed density
-    const perturbedDensity = baseDensity * 
-                             inclinationFactor * 
-                             altitudeFactor * 
-                             perturbationFactors.j2Effect * 
-                             perturbationFactors.atmosphericDrag * 
-                             perturbationFactors.solarRadiationPressure * 
-                             perturbationFactors.lunarGravity;
-    
-    return {
-        baseDensity: baseDensity,
-        perturbedDensity: perturbedDensity,
-        variationFactors: perturbationFactors,
-        orbitType: orbitType
-    };
+  } else {
+    orbitType = 'GEO';
+    if (realCounts && realCounts.geoCount > 0) {
+      const REFERENCE_GEO_COUNT = 600;
+      baseDensity = Math.min(1.0, (realCounts.geoCount / REFERENCE_GEO_COUNT));
+    } else {
+      baseDensity = 0.05;
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Perturbation factors (unchanged from original)
+  // ------------------------------------------------------------------
+
+  // Adjust for inclination clustering
+  const inclinationFactor = 1 - Math.abs(inclination - 90) / 90 * 0.3;
+
+  // Adjust for altitude within orbital band
+  let altitudeFactor = 1;
+  if (orbitType === 'LEO') {
+    altitudeFactor = 1 - Math.pow((altitude - 550) / 1000, 2);
+  } else if (orbitType === 'GEO') {
+    altitudeFactor = 1.2;
+  }
+
+  const perturbationFactors = {
+    j2Effect: 1 + J2_EARTH * Math.sin(inclination * Math.PI / 180),
+    atmosphericDrag: orbitType === 'LEO' ? 1 + (1000 - altitude) / 1000 * 0.2 : 1,
+    solarRadiationPressure: 1 + 0.05 * Math.sin(Date.now() / 86400000),
+    lunarGravity: 1 + 0.02 * Math.sin(Date.now() / 2592000000)
+  };
+
+  const perturbedDensity = baseDensity *
+    inclinationFactor *
+    altitudeFactor *
+    perturbationFactors.j2Effect *
+    perturbationFactors.atmosphericDrag *
+    perturbationFactors.solarRadiationPressure *
+    perturbationFactors.lunarGravity;
+
+  return {
+    baseDensity,
+    perturbedDensity,
+    variationFactors: perturbationFactors,
+    orbitType,
+    usingRealCounts: !!(realCounts && realCounts.leoCount > 0)
+  };
 }
+
 
 module.exports = {
     keplerianToCartesian,

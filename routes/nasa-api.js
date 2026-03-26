@@ -7,6 +7,7 @@
 
 const axios = require('axios');
 require('dotenv').config();
+const { getCelesTrakCounts } = require('./celestrak');
 
 // NASA API configuration
 const NASA_API_BASE_URL = 'https://api.nasa.gov';
@@ -175,5 +176,6 @@ module.exports = {
     getSpaceWeatherData,
     getAsteroidData,
     processSatelliteData,
-    applySpaceWeatherEffects
+    applySpaceWeatherEffects,
+    getCelesTrakCounts
 };

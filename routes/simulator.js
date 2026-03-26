@@ -254,12 +254,12 @@ function classifyOrbit(altitude) {
 }
 
 // Helper function to calculate orbital density (enhanced with perturbations)
-function calculateOrbitalDensity(altitude, inclination) {
+function calculateOrbitalDensity(altitude, inclination, realCounts) {
   // Use advanced orbital mechanics for more accurate density calculation
   const densityAnalysis = advancedOrbitalMechanics.calculatePerturbedOrbitalDensity(altitude, inclination, {
     startDate: new Date(),
     endDate: new Date(Date.now() + 86400000) // 24 hours from now
-  });
+  }, realCounts); // pass real counts through
 
   return densityAnalysis.perturbedDensity;
 }
@@ -432,7 +432,17 @@ router.post('/run', ensureAuthenticated, async (req, res) => {
 
     // Run simulation with enhanced orbital mechanics
     const orbitType = classifyOrbit(altitude);
-    let density = calculateOrbitalDensity(altitude, inclination);
+
+    // Fetch real satellite counts from CelesTrak (graceful fallback built in)
+    let realCounts = null;
+    try {
+      realCounts = await nasaApi.getCelesTrakCounts();
+      console.log(`CelesTrak counts (${realCounts.source}): LEO=${realCounts.leoCount}, MEO=${realCounts.meoCount}, GEO=${realCounts.geoCount}`);
+    } catch (celestrakErr) {
+      console.warn('Could not fetch CelesTrak counts, using hardcoded density:', celestrakErr.message);
+    }
+
+    let density = calculateOrbitalDensity(altitude, inclination, realCounts);
 
     // Try to enhance simulation with real-time NASA data
     try {
@@ -455,10 +465,15 @@ router.post('/run', ensureAuthenticated, async (req, res) => {
     }
 
     // Calculate before state (current conditions)
+    // Use real satellite counts from CelesTrak when available
+    const leoBaseline = (realCounts && realCounts.leoCount > 0) ? realCounts.leoCount : Math.floor(3000 + density * 1000);
+    const meoBaseline = (realCounts && realCounts.meoCount > 0) ? realCounts.meoCount : Math.floor(500 + density * 500);
+    const geoBaseline = (realCounts && realCounts.geoCount > 0) ? realCounts.geoCount : Math.floor(2000 + density * 300);
+
     const beforeState = {
-      objectsInLEO: orbitType === 'LEO' ? Math.floor(3000 + density * 1000) : 3000,
-      objectsInMEO: orbitType === 'MEO' ? Math.floor(500 + density * 500) : 500,
-      objectsInGEO: orbitType === 'GEO' ? Math.floor(2000 + density * 300) : 2000,
+      objectsInLEO: orbitType === 'LEO' ? leoBaseline : Math.floor(leoBaseline * 0.9),
+      objectsInMEO: orbitType === 'MEO' ? meoBaseline : Math.floor(meoBaseline * 0.9),
+      objectsInGEO: orbitType === 'GEO' ? geoBaseline : Math.floor(geoBaseline * 0.9),
       averageCongestion: density,
       collisionProbability: calculateCollisionProbability(density, velocity, mass)
     };
@@ -874,10 +889,19 @@ router.get('/nasa-data', ensureAuthenticated, async (req, res) => {
       asteroidData = { element_count: 0, near_earth_objects: {} };
     }
 
+    // Fetch satellite counts from CelesTrak
+    let satelliteCounts = null;
+    try {
+      satelliteCounts = await nasaApi.getCelesTrakCounts();
+    } catch (celestrakErr) {
+      console.warn('CelesTrak fetch failed in /nasa-data:', celestrakErr.message);
+    }
+
     res.json({
       success: true,
       spaceWeather: spaceWeatherData,
-      asteroids: asteroidData
+      asteroids: asteroidData,
+      satelliteCounts: satelliteCounts || { leoCount: 0, meoCount: 0, geoCount: 0, source: 'unavailable' }
     });
 
   } catch (error) {
@@ -1366,6 +1390,57 @@ router.get('/scenario-comments/:scenarioId', ensureAuthenticated, async (req, re
     res.status(500).json({
       success: false,
       message: 'An error occurred while fetching scenario comments'
+    });
+  }
+});
+
+// DELETE /api/simulator/comment-scenario/:scenarioId/:commentId - Delete a comment
+router.delete('/comment-scenario/:scenarioId/:commentId', ensureAuthenticated, async (req, res) => {
+  try {
+    const { scenarioId, commentId } = req.params;
+
+    // Find the scenario
+    const scenario = await SharedScenario.findById(scenarioId);
+    if (!scenario) {
+      return res.status(404).json({
+        success: false,
+        message: 'Scenario not found'
+      });
+    }
+
+    // Find the comment
+    const comment = scenario.comments.id(commentId);
+    if (!comment) {
+      return res.status(404).json({
+        success: false,
+        message: 'Comment not found'
+      });
+    }
+
+    // Ensure the user owns the comment
+    if (comment.userId.toString() !== req.session.userId.toString()) {
+      return res.status(403).json({
+        success: false,
+        message: 'You are not authorized to delete this comment'
+      });
+    }
+
+    // Remove the comment
+    scenario.comments.pull({ _id: commentId });
+    scenario.updatedAt = new Date();
+    await scenario.save();
+
+    res.json({
+      success: true,
+      message: 'Comment deleted successfully',
+      comments: scenario.comments
+    });
+
+  } catch (error) {
+    console.error('Error deleting comment:', error);
+    res.status(500).json({
+      success: false,
+      message: 'An error occurred while deleting the comment'
     });
   }
 });

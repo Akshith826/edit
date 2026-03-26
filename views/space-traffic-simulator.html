@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Traffic Simulator - SpaceVerse</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Orbitron:wght@500;700;900&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --space-dark: #050510;
@@ -47,29 +50,29 @@
             display: block;
         }
 
-                .navbar {
+        .navbar {
             position: fixed;
             top: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
             width: 98%;
             max-width: 1800px;
-            
+
             /* Sci-Fi Geometry (Chamfered Tech Box) */
             clip-path: polygon(25px 0, calc(100% - 25px) 0, 100% 25px, 100% calc(100% - 25px), calc(100% - 25px) 100%, 25px 100%, 0 calc(100% - 25px), 0 25px);
-            
+
             /* Frosty Glassmorphism */
             background: rgba(5, 10, 20, 0.7);
             backdrop-filter: blur(24px) saturate(200%);
             -webkit-backdrop-filter: blur(24px) saturate(200%);
-            
+
             padding: 0.8rem 2.5rem;
             z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            
+
             /* Inner telemetry glow and structural pseudo-bordering through shadows */
             box-shadow: inset 0 0 20px rgba(0, 243, 255, 0.15), inset 0 0 60px rgba(0, 0, 0, 0.9);
             transition: all 0.4s ease;
@@ -86,12 +89,14 @@
             pointer-events: none;
             z-index: 10;
         }
+
         .nav-bracket.left {
             left: 0;
             border-left: 2px solid var(--neon-blue);
             clip-path: polygon(0 25px, 25px 0, 100% 0, 100% 100%, 25px 100%, 0 calc(100% - 25px));
             box-shadow: inset 10px 0 20px -5px rgba(0, 243, 255, 0.4);
         }
+
         .nav-bracket.right {
             right: 0;
             border-right: 2px solid var(--neon-blue);
@@ -176,7 +181,8 @@
             margin: 0;
         }
 
-        .nav-links li, .nav-links a {
+        .nav-links li,
+        .nav-links a {
             display: inline-block;
         }
 
@@ -235,10 +241,23 @@
         }
 
         @keyframes scanLaser {
-            0% { left: 0%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { left: 100%; opacity: 0; }
+            0% {
+                left: 0%;
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                left: 100%;
+                opacity: 0;
+            }
         }
 
         .container {
@@ -285,12 +304,15 @@
             .main-content {
                 grid-template-columns: 1fr;
             }
+
             .header h1 {
                 font-size: 2.2rem;
             }
+
             .navbar {
                 padding: 1rem;
             }
+
             .nav-links {
                 display: none;
             }
@@ -317,7 +339,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.08) 0%, transparent 50%);
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
@@ -371,13 +393,13 @@
             font-size: 1rem;
             transition: all 0.3s;
             font-family: 'Inter', sans-serif;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .form-control:focus {
             outline: none;
             border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3), inset 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3), inset 0 2px 5px rgba(0, 0, 0, 0.2);
             background: rgba(0, 243, 255, 0.05);
         }
 
@@ -395,7 +417,7 @@
             outline: none;
             border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 0;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         input[type="range"]::-webkit-slider-thumb {
@@ -407,13 +429,13 @@
             background: #ffffff;
             border: 2px solid var(--neon-blue);
             cursor: pointer;
-            box-shadow: 0 0 15px var(--neon-blue), inset 0 0 5px rgba(0,0,0,0.2);
+            box-shadow: 0 0 15px var(--neon-blue), inset 0 0 5px rgba(0, 0, 0, 0.2);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         input[type="range"]::-webkit-slider-thumb:hover {
             transform: scale(1.3);
-            box-shadow: 0 0 25px var(--neon-blue), inset 0 0 5px rgba(0,0,0,0.2);
+            box-shadow: 0 0 25px var(--neon-blue), inset 0 0 5px rgba(0, 0, 0, 0.2);
         }
 
         .btn {
@@ -470,7 +492,8 @@
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05); /* Slight glass look */
+            background: rgba(255, 255, 255, 0.05);
+            /* Slight glass look */
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -527,8 +550,13 @@
         }
 
         @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .orbit {
@@ -539,8 +567,15 @@
         }
 
         @keyframes pulse {
-            from { opacity: 0.4; box-shadow: 0 0 5px rgba(0, 243, 255, 0.2); }
-            to { opacity: 0.8; box-shadow: 0 0 15px rgba(0, 243, 255, 0.4); }
+            from {
+                opacity: 0.4;
+                box-shadow: 0 0 5px rgba(0, 243, 255, 0.2);
+            }
+
+            to {
+                opacity: 0.8;
+                box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
+            }
         }
 
         .satellite {
@@ -555,8 +590,13 @@
         }
 
         @keyframes glow {
-            from { box-shadow: 0 0 10px var(--neon-purple); }
-            to { box-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple); }
+            from {
+                box-shadow: 0 0 10px var(--neon-purple);
+            }
+
+            to {
+                box-shadow: 0 0 20px var(--neon-purple), 0 0 30px var(--neon-purple);
+            }
         }
 
         .results-panel {
@@ -564,7 +604,8 @@
         }
 
         .result-card {
-            background: rgba(255, 255, 255, 0.05); /* Glassmorphism background */
+            background: rgba(255, 255, 255, 0.05);
+            /* Glassmorphism background */
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 20px;
@@ -602,7 +643,8 @@
         .metric {
             text-align: center;
             padding: 15px;
-            background: rgba(255, 255, 255, 0.03); /* Lighter glass */
+            background: rgba(255, 255, 255, 0.03);
+            /* Lighter glass */
             backdrop-filter: blur(10px);
             border-radius: 16px;
             transition: all 0.3s ease;
@@ -663,7 +705,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .recommendations {
@@ -676,7 +718,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             border-right: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .gamification {
@@ -694,7 +736,7 @@
             text-align: center;
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .score-card:hover {
@@ -758,11 +800,12 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <canvas id="space-bg"></canvas>
-    
-    
-        <nav class="navbar">
+
+
+    <nav class="navbar">
         <div class="nav-bracket left"></div>
         <div class="logo">
             <div class="logo-icon">
@@ -773,37 +816,43 @@
         </div>
         <div class="nav-content" id="navContent">
             <ul class="nav-links" id="navLinks">
-                
+
                 <li><a href="/solar-system">Solar System</a></li>
                 <li><a href="/space-traffic-simulator">Traffic</a></li>
                 <li><a href="/mission-tracker">Missions</a></li>
                 <li><a href="/space-launches">Videos</a></li>
             </ul>
-            <a href="/" class="nav-back-btn" style="background: rgba(0,243,255,0.15); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #00f3ff; color: #00f3ff; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0,243,255,0.3); text-decoration: none; display: inline-block; margin-right: 15px; transition: all 0.3s ease;" onmouseover="this.style.background='#00f3ff'; this.style.color='#000'; this.style.boxShadow='0 0 20px #00f3ff';" onmouseout="this.style.background='rgba(0,243,255,0.15)'; this.style.color='#00f3ff'; this.style.boxShadow='0 0 10px rgba(0,243,255,0.3)';">⬅ Back to Home</a>\n            <div class="user-info" id="userInfo">
-                <button class="logout-btn" onclick="logout()" style="background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 0.5rem 1.2rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; transition: all 0.3s; box-shadow: 0 0 5px rgba(255,0,0,0.2);">Logout</button>
+            <a href="/" class="nav-back-btn"
+                style="background: rgba(0,243,255,0.15); padding: 0.5rem 1rem; border-radius: 8px; border: 1px solid #00f3ff; color: #00f3ff; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; box-shadow: 0 0 10px rgba(0,243,255,0.3); text-decoration: none; display: inline-block; margin-right: 15px; transition: all 0.3s ease;"
+                onmouseover="this.style.background='#00f3ff'; this.style.color='#000'; this.style.boxShadow='0 0 20px #00f3ff';"
+                onmouseout="this.style.background='rgba(0,243,255,0.15)'; this.style.color='#00f3ff'; this.style.boxShadow='0 0 10px rgba(0,243,255,0.3)';">⬅
+                Back to Home</a>\n <div class="user-info" id="userInfo">
+                <button class="logout-btn" onclick="logout()"
+                    style="background: rgba(255, 77, 77, 0.1); color: #ff4d4d; border: 1px solid #ff4d4d; padding: 0.5rem 1.2rem; border-radius: 20px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; transition: all 0.3s; box-shadow: 0 0 5px rgba(255,0,0,0.2);">Logout</button>
             </div>
         </div>
         <div class="nav-bracket right"></div>
     </nav>
-    
+
     <div class="container">
         <div class="header">
             <h1>What-If Space Traffic Simulator</h1>
-            <p>Create hypothetical space scenarios and visualize their impact on orbital congestion, collision risk, and sustainability</p>
+            <p>Create hypothetical space scenarios and visualize their impact on orbital congestion, collision risk, and
+                sustainability</p>
         </div>
-        
+
         <div class="main-content">
             <div class="panel">
                 <h2 class="panel-title">Scenario Builder</h2>
-                
+
                 <div class="error-message" id="errorMessage"></div>
                 <div class="success-message" id="successMessage"></div>
-                
+
                 <div class="form-group">
                     <label for="scenarioName">Scenario Name</label>
                     <input type="text" id="scenarioName" class="form-control" placeholder="e.g., Starlink Launch #123">
                 </div>
-                
+
                 <div class="form-group">
                     <label for="eventType">Event Type</label>
                     <select id="eventType" class="form-control">
@@ -812,59 +861,61 @@
                         <option value="breakup">Satellite Breakup</option>
                     </select>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="altitude">Altitude: <span id="altitudeValue">500</span> km</label>
                     <div class="slider-container">
                         <input type="range" id="altitude" class="form-control" min="100" max="2000" value="500">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="inclination">Inclination: <span id="inclinationValue">45</span>°</label>
                     <div class="slider-container">
                         <input type="range" id="inclination" class="form-control" min="0" max="180" value="45">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="velocity">Velocity: <span id="velocityValue">7.8</span> km/s</label>
                     <div class="slider-container">
                         <input type="range" id="velocity" class="form-control" min="0" max="15" step="0.1" value="7.8">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="mass">Mass: <span id="massValue">1000</span> kg</label>
                     <div class="slider-container">
                         <input type="range" id="mass" class="form-control" min="1" max="10000" value="1000">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="launchTime">Launch Time</label>
                     <input type="datetime-local" id="launchTime" class="form-control">
                 </div>
-                
+
                 <div class="visualization">
                     <div class="earth"></div>
                     <div class="orbit" id="orbitPath" style="width: 250px; height: 250px;"></div>
                     <div class="satellite" id="satellitePreview"></div>
                 </div>
-                
+
                 <button id="runSimulation" class="btn btn-primary">🚀 Run Simulation</button>
-                <button id="realTimePrediction" class="btn btn-secondary" style="margin-top: 10px;">🔮 Real-Time Prediction</button>
-                <button id="getRecommendations" class="btn btn-secondary" style="margin-top: 10px;">💡 Get Personalized Tips</button>
-                
+                <button id="realTimePrediction" class="btn btn-secondary" style="margin-top: 10px;">🔮 Real-Time
+                    Prediction</button>
+                <button id="getRecommendations" class="btn btn-secondary" style="margin-top: 10px;">💡 Get Personalized
+                    Tips</button>
+
                 <div class="loading" id="loadingIndicator">
                     <div class="spinner"></div>
                     <p>Running simulation and analyzing space traffic impact...</p>
                 </div>
             </div>
-            
+
             <div class="panel results-panel" id="resultsPanel">
                 <h2 class="panel-title">Simulation Results</h2>
-                
+
                 <div class="metrics">
                     <div class="metric">
                         <div class="metric-value" id="collisionRisk">0%</div>
@@ -879,7 +930,7 @@
                         <div class="metric-label">Debris Probability</div>
                     </div>
                 </div>
-                
+
                 <div class="result-card">
                     <h3 class="result-title">Risk Assessment</h3>
                     <div class="risk-indicator">
@@ -887,7 +938,7 @@
                     </div>
                     <p>Risk Level: <strong id="riskLevel">Low</strong></p>
                 </div>
-                
+
                 <div class="result-card">
                     <h3 class="result-title">Before vs After Comparison</h3>
                     <div class="metrics">
@@ -901,17 +952,17 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="explanation" id="aiExplanation">
                     <h3>AI Analysis</h3>
                     <p id="explanationText">Run a simulation to see AI-powered analysis of the space traffic impact.</p>
                 </div>
-                
+
                 <div class="recommendations" id="recommendationsSection">
                     <h3>Recommendations</h3>
                     <ul id="recommendationsList"></ul>
                 </div>
-                
+
                 <div class="result-card">
                     <h3 class="result-title">Your Performance</h3>
                     <div class="gamification">
@@ -930,45 +981,50 @@
                     </div>
                     <p>Level: <strong id="userLevel">Space Explorer</strong></p>
                 </div>
-                
+
                 <button id="newScenario" class="btn btn-secondary">Create New Scenario</button>
-                <button id="shareScenario" class="btn btn-secondary" style="margin-top: 15px; display: block; text-align: center;">📤 Share with Community</button>
-                <a href="/space-traffic-visualization" class="btn btn-primary" style="margin-top: 15px; display: block; text-align: center;">View 3D Visualization</a>
-                <a href="/community-scenarios" class="btn btn-secondary" style="margin-top: 15px; display: block; text-align: center;">👥 Community Scenarios</a>
+                <button id="shareScenario" class="btn btn-secondary"
+                    style="margin-top: 15px; display: block; text-align: center;">📤 Share with Community</button>
+                <a href="/space-traffic-visualization" class="btn btn-primary"
+                    style="margin-top: 15px; display: block; text-align: center;">View 3D Visualization</a>
+                <a href="/community-scenarios" class="btn btn-secondary"
+                    style="margin-top: 15px; display: block; text-align: center;">👥 Community Scenarios</a>
             </div>
-            
+
             <div class="panel">
                 <h2 class="panel-title">Leaderboard</h2>
                 <div id="leaderboardContent">
                     <p>Loading leaderboard...</p>
                 </div>
             </div>
-            
+
             <div class="panel">
                 <h2 class="panel-title">Real-Time Space Data</h2>
                 <div id="nasaDataContent">
                     <p>Loading real-time space data...</p>
                 </div>
             </div>
-            
+
             <div class="panel">
                 <h2 class="panel-title">Space Chatbot</h2>
                 <div class="form-group">
                     <label for="chatbotQuestion">Ask me anything about space:</label>
-                    <textarea id="chatbotQuestion" class="form-control" placeholder="e.g., What is a black hole?" rows="3"></textarea>
+                    <textarea id="chatbotQuestion" class="form-control" placeholder="e.g., What is a black hole?"
+                        rows="3"></textarea>
                 </div>
                 <button id="askChatbot" class="btn btn-primary">Ask Question</button>
-                
+
                 <div class="loading" id="chatbotLoading">
                     <div class="spinner"></div>
                     <p>Thinking...</p>
                 </div>
-                
+
                 <div class="result-card" id="chatbotResponse" style="display: none; margin-top: 20px;">
                     <h3>Response</h3>
                     <div id="chatbotAnswer"></div>
                 </div>
-            </div>        </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -992,43 +1048,43 @@
         const successMessage = document.getElementById('successMessage');
         const satellitePreview = document.getElementById('satellitePreview');
         const orbitPath = document.getElementById('orbitPath');
-        
+
         // Update slider values
         altitudeSlider.addEventListener('input', () => {
             altitudeValue.textContent = altitudeSlider.value;
             updateSatellitePosition();
         });
-        
+
         inclinationSlider.addEventListener('input', () => {
             inclinationValue.textContent = inclinationSlider.value;
             updateSatellitePosition();
         });
-        
+
         velocitySlider.addEventListener('input', () => {
             velocityValue.textContent = velocitySlider.value;
         });
-        
+
         massSlider.addEventListener('input', () => {
             massValue.textContent = massSlider.value;
         });
-        
+
         // Update satellite position preview
         function updateSatellitePosition() {
             const altitude = parseInt(altitudeSlider.value);
             const inclination = parseInt(inclinationSlider.value);
-            
+
             // Calculate position based on altitude and inclination
             // This is a simplified visualization
             const radius = 100 + (altitude / 2000) * 100; // Scale radius based on altitude
             const angle = (inclination / 180) * Math.PI; // Convert inclination to radians
-            
+
             // Position satellite in orbit
             const x = 150 + radius * Math.cos(angle) - 10; // Center in container minus half satellite size
             const y = 150 + radius * Math.sin(angle) - 10;
-            
+
             satellitePreview.style.left = `${x}px`;
             satellitePreview.style.top = `${y}px`;
-            
+
             // Update orbit path size
             const orbitSize = radius * 2;
             orbitPath.style.width = `${orbitSize}px`;
@@ -1036,10 +1092,10 @@
             orbitPath.style.left = `${150 - radius}px`;
             orbitPath.style.top = `${150 - radius}px`;
         }
-        
+
         // Initialize satellite position
         updateSatellitePosition();
-        
+
         // Set default launch time to now
         const now = new Date();
         const year = now.getFullYear();
@@ -1048,43 +1104,43 @@
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         document.getElementById('launchTime').value = `${year}-${month}-${day}T${hours}:${minutes}`;
-        
+
         // Run simulation
         runSimulationBtn.addEventListener('click', async () => {
             await runSimulation();
         });
-        
+
         // Real-time prediction
         realTimePredictionBtn.addEventListener('click', async () => {
             await getRealTimePrediction();
         });
-        
+
         // Get personalized recommendations
         getRecommendationsBtn.addEventListener('click', async () => {
             await getPersonalizedRecommendations();
         });
-        
+
         // Share scenario
         shareScenarioBtn.addEventListener('click', async () => {
             await shareCurrentScenario();
         });
-        
+
         async function runSimulation() {
             // Hide previous messages
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
-            
+
             // Validate inputs
             const scenarioName = document.getElementById('scenarioName').value.trim();
             if (!scenarioName) {
                 showError('Please enter a scenario name');
                 return;
             }
-            
+
             // Show loading indicator
             loadingIndicator.style.display = 'block';
             runSimulationBtn.disabled = true;
-            
+
             try {
                 // Collect scenario parameters
                 const scenarioData = {
@@ -1098,7 +1154,7 @@
                         launchTime: document.getElementById('launchTime').value
                     }
                 };
-                
+
                 // Call the actual backend API
                 const response = await fetch('/api/simulator/run', {
                     method: 'POST',
@@ -1108,16 +1164,16 @@
                     body: JSON.stringify(scenarioData),
                     credentials: 'include'
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!data.success) {
                     throw new Error(data.message || 'Simulation failed');
                 }
-                
+
                 // Display results
                 displayResults(data);
-                
+
                 // Show success message
                 showSuccess('Simulation completed successfully!');
             } catch (error) {
@@ -1131,33 +1187,33 @@
                 getRecommendationsBtn.disabled = false;
             }
         }
-        
+
         // Display simulation results
         function displayResults(data) {
             // Update metrics
             document.getElementById('collisionRisk').textContent = data.aiAnalysis.collisionRiskPercentage.toFixed(1) + '%';
             document.getElementById('congestionIncrease').textContent = data.aiAnalysis.orbitalCongestionIncrease.toFixed(1) + '%';
             document.getElementById('debrisProbability').textContent = data.aiAnalysis.secondaryDebrisProbability.toFixed(1) + '%';
-            
+
             // Update risk level and marker
             const riskLevel = data.aiAnalysis.collisionRiskPercentage;
             let riskText = 'Low';
             if (riskLevel > 70) riskText = 'High';
             else if (riskLevel > 40) riskText = 'Medium';
-            
+
             document.getElementById('riskLevel').textContent = riskText;
-            
+
             // Position risk marker
             const markerPosition = (riskLevel / 100) * 100;
             document.getElementById('riskMarker').style.left = `${markerPosition}%`;
-            
+
             // Update before/after comparison
             document.getElementById('beforeObjects').textContent = data.results.beforeState.objectsInLEO;
             document.getElementById('afterObjects').textContent = data.results.afterState.objectsInLEO;
-            
+
             // Update AI explanation
             document.getElementById('explanationText').textContent = data.aiAnalysis.explanation;
-            
+
             // Update recommendations
             const recommendationsList = document.getElementById('recommendationsList');
             recommendationsList.innerHTML = '';
@@ -1172,25 +1228,25 @@
                 li.textContent = 'No specific recommendations at this time.';
                 recommendationsList.appendChild(li);
             }
-            
+
             // Update gamification scores
             if (data.gamification && data.gamification.scores) {
-                document.getElementById('safetyScore').textContent = data.gamification.scores.safetyScore;
-                document.getElementById('sustainabilityScore').textContent = data.gamification.scores.sustainabilityScore;
-                document.getElementById('efficiencyScore').textContent = data.gamification.scores.efficiencyScore;
+                document.getElementById('safetyScore').textContent = data.gamification.scores.safetyScore.toFixed(2);
+                document.getElementById('sustainabilityScore').textContent = data.gamification.scores.sustainabilityScore.toFixed(2);
+                document.getElementById('efficiencyScore').textContent = data.gamification.scores.efficiencyScore.toFixed(2);
                 document.getElementById('userLevel').textContent = data.gamification.level;
             }
-            
+
             // Show results panel
             resultsPanel.style.display = 'block';
-            
+
             // Refresh leaderboard
             fetchLeaderboard();
-            
+
             // Scroll to results
             resultsPanel.scrollIntoView({ behavior: 'smooth' });
         }
-        
+
         // Create new scenario
         newScenarioBtn.addEventListener('click', () => {
             resultsPanel.style.display = 'none';
@@ -1205,7 +1261,7 @@
             velocityValue.textContent = '7.8';
             massValue.textContent = '1000';
             updateSatellitePosition();
-            
+
             // Reset launch time
             const now = new Date();
             const year = now.getFullYear();
@@ -1215,31 +1271,31 @@
             const minutes = String(now.getMinutes()).padStart(2, '0');
             document.getElementById('launchTime').value = `${year}-${month}-${day}T${hours}:${minutes}`;
         });
-        
+
         // Show error message
         function showError(message) {
             errorMessage.textContent = message;
             errorMessage.style.display = 'block';
             successMessage.style.display = 'none';
         }
-        
+
         // Show success message
         function showSuccess(message) {
             successMessage.textContent = message;
             successMessage.style.display = 'block';
             errorMessage.style.display = 'none';
         }
-        
+
         // Get real-time prediction
         async function getRealTimePrediction() {
             // Hide previous messages
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
-            
+
             // Show loading indicator
             loadingIndicator.style.display = 'block';
             realTimePredictionBtn.disabled = true;
-            
+
             try {
                 // Collect current state
                 const currentState = {
@@ -1249,7 +1305,7 @@
                     averageCongestion: parseFloat(document.getElementById('congestionIncrease').textContent) || 0.5,
                     collisionProbability: parseFloat(document.getElementById('collisionRisk').textContent) || 0.01
                 };
-                
+
                 // Collect scenario parameters
                 const parameters = {
                     altitude: parseInt(altitudeSlider.value),
@@ -1258,14 +1314,14 @@
                     mass: parseInt(massSlider.value),
                     launchTime: document.getElementById('launchTime').value
                 };
-                
+
                 // Get environmental factors (placeholder)
                 const environmentalFactors = {
                     geomagnetic_storm_severity: 3,
                     solar_radiation_level: 5,
                     near_earth_objects: 2
                 };
-                
+
                 // Call the real-time prediction API
                 const response = await fetch('/api/simulator/real-time-prediction', {
                     method: 'POST',
@@ -1280,16 +1336,16 @@
                     }),
                     credentials: 'include'
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!data.success) {
                     throw new Error(data.message || 'Prediction failed');
                 }
-                
+
                 // Display real-time prediction results
                 displayRealTimePrediction(data.aiAnalysis);
-                
+
                 // Show success message
                 showSuccess('Real-time prediction completed successfully!');
             } catch (error) {
@@ -1301,29 +1357,29 @@
                 realTimePredictionBtn.disabled = false;
             }
         }
-        
+
         // Display real-time prediction results
         function displayRealTimePrediction(data) {
             // Update metrics
             document.getElementById('collisionRisk').textContent = data.collisionRiskPercentage.toFixed(1) + '%';
             document.getElementById('congestionIncrease').textContent = data.orbitalCongestionIncrease.toFixed(1) + '%';
             document.getElementById('debrisProbability').textContent = data.secondaryDebrisProbability.toFixed(1) + '%';
-            
+
             // Update risk level and marker
             const riskLevel = data.collisionRiskPercentage;
             let riskText = 'Low';
             if (riskLevel > 70) riskText = 'High';
             else if (riskLevel > 40) riskText = 'Medium';
-            
+
             document.getElementById('riskLevel').textContent = riskText;
-            
+
             // Position risk marker
             const markerPosition = (riskLevel / 100) * 100;
             document.getElementById('riskMarker').style.left = `${markerPosition}%`;
-            
+
             // Update AI explanation
             document.getElementById('explanationText').textContent = data.explanation;
-            
+
             // Update recommendations
             const recommendationsList = document.getElementById('recommendationsList');
             recommendationsList.innerHTML = '';
@@ -1338,24 +1394,24 @@
                 li.textContent = 'No specific recommendations at this time.';
                 recommendationsList.appendChild(li);
             }
-            
+
             // Show results panel
             resultsPanel.style.display = 'block';
-            
+
             // Scroll to results
             resultsPanel.scrollIntoView({ behavior: 'smooth' });
         }
-        
+
         // Get personalized recommendations
         async function getPersonalizedRecommendations() {
             // Hide previous messages
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
-            
+
             // Show loading indicator
             loadingIndicator.style.display = 'block';
             getRecommendationsBtn.disabled = true;
-            
+
             try {
                 // Collect current scenario
                 const currentScenario = {
@@ -1367,7 +1423,7 @@
                         mass: parseInt(massSlider.value)
                     }
                 };
-                
+
                 // Call the personalized recommendations API
                 const response = await fetch('/api/simulator/personalized-recommendations', {
                     method: 'POST',
@@ -1382,16 +1438,16 @@
                     }),
                     credentials: 'include'
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!data.success) {
                     throw new Error(data.message || 'Recommendations failed');
                 }
-                
+
                 // Display personalized recommendations
                 displayPersonalizedRecommendations(data.recommendations);
-                
+
                 // Show success message
                 showSuccess('Personalized recommendations generated successfully!');
             } catch (error) {
@@ -1403,13 +1459,13 @@
                 getRecommendationsBtn.disabled = false;
             }
         }
-        
+
         // Display personalized recommendations
         function displayPersonalizedRecommendations(data) {
             // Update recommendations section
             const recommendationsList = document.getElementById('recommendationsList');
             recommendationsList.innerHTML = '';
-            
+
             if (data.recommendations && data.recommendations.length > 0) {
                 data.recommendations.forEach(rec => {
                     const li = document.createElement('li');
@@ -1421,20 +1477,20 @@
                 li.textContent = 'No specific recommendations at this time.';
                 recommendationsList.appendChild(li);
             }
-            
+
             // Show results panel
             resultsPanel.style.display = 'block';
-            
+
             // Scroll to results
             resultsPanel.scrollIntoView({ behavior: 'smooth' });
         }
-        
+
         // Share current scenario
         async function shareCurrentScenario() {
             // Hide previous messages
             errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
-            
+
             try {
                 // Collect scenario data
                 const scenarioData = {
@@ -1449,7 +1505,7 @@
                         launchTime: document.getElementById('launchTime').value
                     }
                 };
-                
+
                 // Call the share scenario API
                 const response = await fetch('/api/simulator/share-scenario', {
                     method: 'POST',
@@ -1459,13 +1515,13 @@
                     body: JSON.stringify(scenarioData),
                     credentials: 'include'
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (!data.success) {
                     throw new Error(data.message || 'Sharing failed');
                 }
-                
+
                 // Show success message
                 showSuccess('Scenario shared with the community successfully!');
             } catch (error) {
@@ -1473,13 +1529,13 @@
                 showError('Failed to share scenario. Please try again.');
             }
         }
-        
+
         // Check user authentication status
         async function checkAuthStatus() {
             try {
                 const response = await fetch('/api/user', { credentials: 'include' });
                 const data = await response.json();
-                
+
                 if (!data.loggedIn) {
                     // Redirect to login or show message
                     showError('Please log in to use the Space Traffic Simulator');
@@ -1489,13 +1545,13 @@
                 console.log('Authentication check failed');
             }
         }
-        
+
         // Fetch and display leaderboard
         async function fetchLeaderboard() {
             try {
                 const response = await fetch('/api/simulator/leaderboard', { credentials: 'include' });
                 const data = await response.json();
-                
+
                 if (data.success) {
                     displayLeaderboard(data.leaderboard, data.currentUser);
                 } else {
@@ -1506,7 +1562,7 @@
                 document.getElementById('leaderboardContent').innerHTML = '<p>Error loading leaderboard</p>';
             }
         }
-        
+
         // Display leaderboard
         function displayLeaderboard(leaderboard, currentUser) {
             let html = `
@@ -1521,11 +1577,11 @@
                     </thead>
                     <tbody>
             `;
-            
+
             leaderboard.forEach(entry => {
                 const isCurrentUser = entry.username === currentUser.username;
                 const rowStyle = isCurrentUser ? 'background: rgba(100, 255, 218, 0.2); font-weight: bold;' : '';
-                
+
                 html += `
                     <tr style="${rowStyle}">
                         <td style="padding: 10px;">${entry.rank}</td>
@@ -1535,7 +1591,7 @@
                     </tr>
                 `;
             });
-            
+
             html += `
                     </tbody>
                 </table>
@@ -1543,16 +1599,16 @@
                     Your rank: ${currentUser.rank || 'N/A'}
                 </p>
             `;
-            
+
             document.getElementById('leaderboardContent').innerHTML = html;
         }
-        
+
         // Fetch and display NASA data
         async function fetchNasaData() {
             try {
                 const response = await fetch('/api/simulator/nasa-data', { credentials: 'include' });
                 const data = await response.json();
-                
+
                 if (data.success) {
                     displayNasaData(data.spaceWeather, data.asteroids);
                 } else {
@@ -1563,14 +1619,14 @@
                 document.getElementById('nasaDataContent').innerHTML = '<p>Error loading space data</p>';
             }
         }
-        
+
         // Display NASA data
         function displayNasaData(spaceWeather, asteroids) {
             let html = `
                 <div style="margin-bottom: 15px;">
                     <h3>Space Weather</h3>
             `;
-            
+
             // Display recent space weather events
             if (spaceWeather && spaceWeather.length > 0) {
                 const latestEvent = spaceWeather[spaceWeather.length - 1];
@@ -1581,18 +1637,18 @@
             } else {
                 html += '<p>No recent space weather events</p>';
             }
-            
+
             html += `</div>`;
-            
+
             // Display asteroid data
             html += `
                 <div>
                     <h3>Near-Earth Objects</h3>
             `;
-            
+
             if (asteroids && asteroids.element_count > 0) {
                 html += `<p><strong>Objects tracked today:</strong> ${asteroids.element_count}</p>`;
-                
+
                 // Show a few notable asteroids
                 const today = new Date().toISOString().split('T')[0];
                 if (asteroids.near_earth_objects && asteroids.near_earth_objects[today]) {
@@ -1605,7 +1661,7 @@
                             `;
                         });
                         html += '</ul>';
-                        
+
                         if (todaysAsteroids.length > 3) {
                             html += `<p>+${todaysAsteroids.length - 3} more objects</p>`;
                         }
@@ -1614,32 +1670,32 @@
             } else {
                 html += '<p>No near-Earth objects currently tracked</p>';
             }
-            
+
             html += `</div>`;
-            
+
             document.getElementById('nasaDataContent').innerHTML = html;
         }
-        
+
         // Chatbot functionality
         const askChatbotBtn = document.getElementById('askChatbot');
         const chatbotQuestion = document.getElementById('chatbotQuestion');
         const chatbotLoading = document.getElementById('chatbotLoading');
         const chatbotResponse = document.getElementById('chatbotResponse');
         const chatbotAnswer = document.getElementById('chatbotAnswer');
-        
+
         askChatbotBtn.addEventListener('click', async () => {
             const question = chatbotQuestion.value.trim();
-            
+
             if (!question) {
                 alert('Please enter a question');
                 return;
             }
-            
+
             // Show loading indicator
             chatbotLoading.style.display = 'block';
             chatbotResponse.style.display = 'none';
             askChatbotBtn.disabled = true;
-            
+
             try {
                 const response = await fetch('/api/simulator/chatbot', {
                     method: 'POST',
@@ -1649,9 +1705,9 @@
                     body: JSON.stringify({ question }),
                     credentials: 'include'
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (data.success) {
                     // Display the response
                     chatbotAnswer.innerHTML = `<p><strong>Q:</strong> ${data.question}</p><p><strong>A:</strong> ${data.answer}</p>`;
@@ -1670,7 +1726,7 @@
                 askChatbotBtn.disabled = false;
             }
         });
-        
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             checkAuthStatus();
@@ -1679,195 +1735,196 @@
         });
     </script>
     <script>
-    /* ====================================================
-       REALISTIC SPACE BACKGROUND — Canvas Star Engine
-       ==================================================== */
-    (function () {
-        const canvas = document.getElementById('space-bg');
-        const ctx = canvas.getContext('2d');
+        /* ====================================================
+           REALISTIC SPACE BACKGROUND — Canvas Star Engine
+           ==================================================== */
+        (function () {
+            const canvas = document.getElementById('space-bg');
+            const ctx = canvas.getContext('2d');
 
-        // Resize canvas to fill viewport
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resize();
-        window.addEventListener('resize', () => { resize(); initStars(); });
-
-        // Star color palette – realistic spectral tints
-        const STAR_COLORS = [
-            { r: 255, g: 255, b: 255 },  // pure white
-            { r: 200, g: 220, b: 255 },  // blue-white
-            { r: 180, g: 200, b: 255 },  // blue
-            { r: 255, g: 245, b: 220 },  // warm white
-            { r: 255, g: 220, b: 160 },  // yellow
-            { r: 255, g: 180, b: 100 },  // orange
-            { r: 255, g: 150, b: 120 },  // red dwarf
-        ];
-
-        // Layer config: count, speed multiplier, max radius
-        const LAYERS = [
-            { count: 250, speed: 0.0,  maxR: 0.6 },  // far – tiny, static
-            { count: 180, speed: 0.0,  maxR: 1.1 },  // mid
-            { count: 90,  speed: 0.0,  maxR: 1.8 },  // near – large, bright
-        ];
-
-        let stars = [];
-        let shooters = [];
-        let nebulae = [];
-
-        function randRange(min, max) { return Math.random() * (max - min) + min; }
-        function randInt(min, max) { return Math.floor(randRange(min, max)); }
-
-        function initStars() {
-            stars = [];
-            const W = canvas.width, H = canvas.height;
-
-            LAYERS.forEach((layer, li) => {
-                for (let i = 0; i < layer.count; i++) {
-                    const col = STAR_COLORS[randInt(0, STAR_COLORS.length)];
-                    stars.push({
-                        x:        randRange(0, W),
-                        y:        randRange(0, H),
-                        r:        randRange(0.15, layer.maxR),
-                        baseAlpha: randRange(0.4, 1.0),
-                        alpha:    0,
-                        twinkleSpeed: randRange(0.003, 0.025),
-                        twinkleOffset: randRange(0, Math.PI * 2),
-                        color:    col,
-                        layer:    li,
-                        glowMult: li === 2 ? randRange(2.5, 5) : (li === 1 ? randRange(1.5, 3) : 1),
-                    });
-                }
-            });
-
-            // Pre-bake a few nebula blobs
-            nebulae = [];
-            const nebulaConfigs = [
-                { cx: 0.15, cy: 0.50, r: 0.25, col: '188,19,254',  a: 0.045 },
-                { cx: 0.85, cy: 0.30, r: 0.28, col: '0,180,255',   a: 0.040 },
-                { cx: 0.50, cy: 0.85, r: 0.20, col: '255,120,20',  a: 0.030 },
-                { cx: 0.70, cy: 0.10, r: 0.18, col: '80,220,180',  a: 0.025 },
-            ];
-            nebulaConfigs.forEach(n => nebulae.push({
-                cx: n.cx * W, cy: n.cy * H,
-                r:  n.r  * Math.max(W, H),
-                col: n.col, a: n.a,
-            }));
-        }
-
-        function spawnShooter() {
-            const W = canvas.width, H = canvas.height;
-            const angle = randRange(-0.6, -0.2);  // mostly downward right
-            shooters.push({
-                x:     randRange(0, W),
-                y:     randRange(0, H * 0.5),
-                len:   randRange(60, 180),
-                speed: randRange(6, 14),
-                alpha: 1,
-                dx:    Math.cos(angle),
-                dy:    Math.sin(angle) * 0.5 + 0.5,
-                life:  1,
-            });
-        }
-
-        let t = 0;
-        let lastShooter = 0;
-
-        function draw(ts) {
-            t = ts * 0.001;
-            const W = canvas.width, H = canvas.height;
-
-            // Background fill
-            ctx.fillStyle = '#000000';
-            ctx.fillRect(0, 0, W, H);
-
-            // Nebula blobs
-            nebulae.forEach(n => {
-                const grad = ctx.createRadialGradient(n.cx, n.cy, 0, n.cx, n.cy, n.r);
-                grad.addColorStop(0,   `rgba(${n.col}, ${n.a})`);
-                grad.addColorStop(0.5, `rgba(${n.col}, ${n.a * 0.4})`);
-                grad.addColorStop(1,   `rgba(${n.col}, 0)`);
-                ctx.fillStyle = grad;
-                ctx.beginPath();
-                ctx.arc(n.cx, n.cy, n.r, 0, Math.PI * 2);
-                ctx.fill();
-            });
-
-            // Stars
-            stars.forEach(s => {
-                const flicker = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed * 60 + s.twinkleOffset);
-                s.alpha = s.baseAlpha * (0.55 + 0.45 * flicker);
-
-                const r = s.r;
-                const { r: cr, g: cg, b: cb } = s.color;
-
-                // Glow halo
-                if (s.glowMult > 1) {
-                    const gVal = Math.max(0, s.alpha - 0.2);
-                    const glowR = r * s.glowMult;
-                    const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glowR);
-                    grd.addColorStop(0,   `rgba(${cr},${cg},${cb},${gVal * 0.6})`);
-                    grd.addColorStop(0.4, `rgba(${cr},${cg},${cb},${gVal * 0.15})`);
-                    grd.addColorStop(1,   `rgba(${cr},${cg},${cb},0)`);
-                    ctx.fillStyle = grd;
-                    ctx.beginPath();
-                    ctx.arc(s.x, s.y, glowR, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                // Star core
-                ctx.globalAlpha = s.alpha;
-                ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Cross-diffraction spike
-                if (s.layer === 2 && s.r > 1.3 && s.alpha > 0.7) {
-                    ctx.globalAlpha = s.alpha * 0.3;
-                    ctx.strokeStyle = `rgb(${cr},${cg},${cb})`;
-                    ctx.lineWidth = 0.5;
-                    const sLen = r * 4;
-                    ctx.beginPath();
-                    ctx.moveTo(s.x - sLen, s.y); ctx.lineTo(s.x + sLen, s.y);
-                    ctx.moveTo(s.x, s.y - sLen); ctx.lineTo(s.x, s.y + sLen);
-                    ctx.stroke();
-                }
-            });
-            ctx.globalAlpha = 1;
-
-            // Shooting stars
-            if (ts - lastShooter > randRange(1800, 5000)) {
-                spawnShooter();
-                lastShooter = ts;
+            // Resize canvas to fill viewport
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
             }
-            shooters = shooters.filter(s => s.life > 0);
-            shooters.forEach(s => {
-                s.life -= 0.015;
-                s.x += s.dx * s.speed;
-                s.y += s.dy * s.speed;
-                const tail = ctx.createLinearGradient(
-                    s.x - s.dx * s.len, s.y - s.dy * s.len, s.x, s.y
-                );
-                tail.addColorStop(0, `rgba(255,255,255,0)`);
-                tail.addColorStop(1, `rgba(255,255,255,${s.life * 0.9})`);
-                ctx.strokeStyle = tail;
-                ctx.lineWidth = 1.5;
-                ctx.beginPath();
-                ctx.moveTo(s.x - s.dx * s.len, s.y - s.dy * s.len);
-                ctx.lineTo(s.x, s.y);
-                ctx.stroke();
-            });
+            resize();
+            window.addEventListener('resize', () => { resize(); initStars(); });
 
+            // Star color palette – realistic spectral tints
+            const STAR_COLORS = [
+                { r: 255, g: 255, b: 255 },  // pure white
+                { r: 200, g: 220, b: 255 },  // blue-white
+                { r: 180, g: 200, b: 255 },  // blue
+                { r: 255, g: 245, b: 220 },  // warm white
+                { r: 255, g: 220, b: 160 },  // yellow
+                { r: 255, g: 180, b: 100 },  // orange
+                { r: 255, g: 150, b: 120 },  // red dwarf
+            ];
+
+            // Layer config: count, speed multiplier, max radius
+            const LAYERS = [
+                { count: 250, speed: 0.0, maxR: 0.6 },  // far – tiny, static
+                { count: 180, speed: 0.0, maxR: 1.1 },  // mid
+                { count: 90, speed: 0.0, maxR: 1.8 },  // near – large, bright
+            ];
+
+            let stars = [];
+            let shooters = [];
+            let nebulae = [];
+
+            function randRange(min, max) { return Math.random() * (max - min) + min; }
+            function randInt(min, max) { return Math.floor(randRange(min, max)); }
+
+            function initStars() {
+                stars = [];
+                const W = canvas.width, H = canvas.height;
+
+                LAYERS.forEach((layer, li) => {
+                    for (let i = 0; i < layer.count; i++) {
+                        const col = STAR_COLORS[randInt(0, STAR_COLORS.length)];
+                        stars.push({
+                            x: randRange(0, W),
+                            y: randRange(0, H),
+                            r: randRange(0.15, layer.maxR),
+                            baseAlpha: randRange(0.4, 1.0),
+                            alpha: 0,
+                            twinkleSpeed: randRange(0.003, 0.025),
+                            twinkleOffset: randRange(0, Math.PI * 2),
+                            color: col,
+                            layer: li,
+                            glowMult: li === 2 ? randRange(2.5, 5) : (li === 1 ? randRange(1.5, 3) : 1),
+                        });
+                    }
+                });
+
+                // Pre-bake a few nebula blobs
+                nebulae = [];
+                const nebulaConfigs = [
+                    { cx: 0.15, cy: 0.50, r: 0.25, col: '188,19,254', a: 0.045 },
+                    { cx: 0.85, cy: 0.30, r: 0.28, col: '0,180,255', a: 0.040 },
+                    { cx: 0.50, cy: 0.85, r: 0.20, col: '255,120,20', a: 0.030 },
+                    { cx: 0.70, cy: 0.10, r: 0.18, col: '80,220,180', a: 0.025 },
+                ];
+                nebulaConfigs.forEach(n => nebulae.push({
+                    cx: n.cx * W, cy: n.cy * H,
+                    r: n.r * Math.max(W, H),
+                    col: n.col, a: n.a,
+                }));
+            }
+
+            function spawnShooter() {
+                const W = canvas.width, H = canvas.height;
+                const angle = randRange(-0.6, -0.2);  // mostly downward right
+                shooters.push({
+                    x: randRange(0, W),
+                    y: randRange(0, H * 0.5),
+                    len: randRange(60, 180),
+                    speed: randRange(6, 14),
+                    alpha: 1,
+                    dx: Math.cos(angle),
+                    dy: Math.sin(angle) * 0.5 + 0.5,
+                    life: 1,
+                });
+            }
+
+            let t = 0;
+            let lastShooter = 0;
+
+            function draw(ts) {
+                t = ts * 0.001;
+                const W = canvas.width, H = canvas.height;
+
+                // Background fill
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, W, H);
+
+                // Nebula blobs
+                nebulae.forEach(n => {
+                    const grad = ctx.createRadialGradient(n.cx, n.cy, 0, n.cx, n.cy, n.r);
+                    grad.addColorStop(0, `rgba(${n.col}, ${n.a})`);
+                    grad.addColorStop(0.5, `rgba(${n.col}, ${n.a * 0.4})`);
+                    grad.addColorStop(1, `rgba(${n.col}, 0)`);
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(n.cx, n.cy, n.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+
+                // Stars
+                stars.forEach(s => {
+                    const flicker = 0.5 + 0.5 * Math.sin(t * s.twinkleSpeed * 60 + s.twinkleOffset);
+                    s.alpha = s.baseAlpha * (0.55 + 0.45 * flicker);
+
+                    const r = s.r;
+                    const { r: cr, g: cg, b: cb } = s.color;
+
+                    // Glow halo
+                    if (s.glowMult > 1) {
+                        const gVal = Math.max(0, s.alpha - 0.2);
+                        const glowR = r * s.glowMult;
+                        const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glowR);
+                        grd.addColorStop(0, `rgba(${cr},${cg},${cb},${gVal * 0.6})`);
+                        grd.addColorStop(0.4, `rgba(${cr},${cg},${cb},${gVal * 0.15})`);
+                        grd.addColorStop(1, `rgba(${cr},${cg},${cb},0)`);
+                        ctx.fillStyle = grd;
+                        ctx.beginPath();
+                        ctx.arc(s.x, s.y, glowR, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    // Star core
+                    ctx.globalAlpha = s.alpha;
+                    ctx.fillStyle = `rgb(${cr},${cg},${cb})`;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Cross-diffraction spike
+                    if (s.layer === 2 && s.r > 1.3 && s.alpha > 0.7) {
+                        ctx.globalAlpha = s.alpha * 0.3;
+                        ctx.strokeStyle = `rgb(${cr},${cg},${cb})`;
+                        ctx.lineWidth = 0.5;
+                        const sLen = r * 4;
+                        ctx.beginPath();
+                        ctx.moveTo(s.x - sLen, s.y); ctx.lineTo(s.x + sLen, s.y);
+                        ctx.moveTo(s.x, s.y - sLen); ctx.lineTo(s.x, s.y + sLen);
+                        ctx.stroke();
+                    }
+                });
+                ctx.globalAlpha = 1;
+
+                // Shooting stars
+                if (ts - lastShooter > randRange(1800, 5000)) {
+                    spawnShooter();
+                    lastShooter = ts;
+                }
+                shooters = shooters.filter(s => s.life > 0);
+                shooters.forEach(s => {
+                    s.life -= 0.015;
+                    s.x += s.dx * s.speed;
+                    s.y += s.dy * s.speed;
+                    const tail = ctx.createLinearGradient(
+                        s.x - s.dx * s.len, s.y - s.dy * s.len, s.x, s.y
+                    );
+                    tail.addColorStop(0, `rgba(255,255,255,0)`);
+                    tail.addColorStop(1, `rgba(255,255,255,${s.life * 0.9})`);
+                    ctx.strokeStyle = tail;
+                    ctx.lineWidth = 1.5;
+                    ctx.beginPath();
+                    ctx.moveTo(s.x - s.dx * s.len, s.y - s.dy * s.len);
+                    ctx.lineTo(s.x, s.y);
+                    ctx.stroke();
+                });
+
+                requestAnimationFrame(draw);
+            }
+
+            initStars();
             requestAnimationFrame(draw);
-        }
-
-        initStars();
-        requestAnimationFrame(draw);
-    })();
+        })();
     </script>
     <!-- Chat widget: global popup available on main pages -->
     <script src="/public/js/chat-widget.js" defer></script>
 </body>
-</html> 
+
+</html>
