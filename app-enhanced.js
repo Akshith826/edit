@@ -6,7 +6,25 @@ const session = require('express-session');
 const bcrypt = require('bcryptjs');
 const path = require('path');
 require('dotenv').config();
+require('dns').setServers(['8.8.8.8', '8.8.4.4']);
 const { GoogleGenAI } = require('@google/genai');
+
+// --- Firebase Authentication Setup ---
+const { initializeApp } = require('firebase/app');
+const { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } = require('firebase/auth');
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAYuJAIjnHjBvyc5gvZJDJIanc5fnolW0A",
+  authDomain: "spaceverse-d263d.firebaseapp.com",
+  projectId: "spaceverse-d263d",
+  storageBucket: "spaceverse-d263d.firebasestorage.app",
+  messagingSenderId: "34859465212",
+  appId: "1:34859465212:web:ed34af048d9d1852bfda79"
+};
+
+const firebaseApp = initializeApp(firebaseConfig);
+const firebaseAuth = getAuth(firebaseApp);
+// -------------------------------------
 
 const ai = new GoogleGenAI({}); // Automatically picks up GEMINI_API_KEY from .env
 
@@ -216,6 +234,7 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    firebaseUid: { type: String, default: null },
     createdAt: { type: Date, default: Date.now },
     quizScores: [{
         score: Number,
@@ -261,27 +280,36 @@ app.post('/api/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
 
-        // Check if user already exists
+        // Check if user already exists in local DB
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
             return res.status(400).json({ error: 'User already exists' });
         }
 
-        // Hash password
+        // Register user securely into Firebase Authentication
+        let userCredential;
+        try {
+            userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+        } catch (firebaseErr) {
+            return res.status(400).json({ error: 'Firebase error: ' + firebaseErr.message });
+        }
+
+        // Hash password just for legacy compatibility in DB (or could leave empty, but let's keep it consistent)
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create new user
+        // Create new user in our local MongoDB to store quiz scores and link with Firebase UID
         const user = new User({
             username,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+            firebaseUid: userCredential.user.uid // Link to Firebase
         });
 
         await user.save();
         req.session.userId = user._id;
         req.session.username = user.username;
 
-        res.json({ success: true, message: 'User registered successfully' });
+        res.json({ success: true, message: 'User registered via Firebase!' });
     } catch (error) {
         res.status(500).json({ error: 'Registration failed' });
     }
@@ -291,24 +319,80 @@ app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        // Find user
+        // Find user by their username to get the email (since Firebase requires email)
         const user = await User.findOne({ username });
         if (!user) {
             return res.status(400).json({ error: 'Invalid credentials' });
         }
 
-        // Check password
-        const isValidPassword = await bcrypt.compare(password, user.password);
-        if (!isValidPassword) {
-            return res.status(400).json({ error: 'Invalid credentials' });
+        // Verify password natively with Firebase
+        try {
+            await signInWithEmailAndPassword(firebaseAuth, user.email, password);
+        } catch (firebaseErr) {
+            // Check legacy bcrypt password as fallback in case they registered before Firebase
+            const isValidPassword = await bcrypt.compare(password, user.password);
+            if (!isValidPassword) {
+                return res.status(400).json({ error: 'Invalid credentials. Firebase sync failed.' });
+            }
         }
 
         req.session.userId = user._id;
         req.session.username = user.username;
 
-        res.json({ success: true, message: 'Login successful', username: user.username });
+        res.json({ success: true, message: 'Login via Firebase successful', username: user.username });
     } catch (error) {
         res.status(500).json({ error: 'Login failed' });
+    }
+});
+
+app.post('/api/google-login', async (req, res) => {
+    try {
+        const { idToken } = req.body;
+        
+        const axios = require('axios');
+        const response = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${firebaseConfig.apiKey}`, {
+            idToken
+        });
+        
+        const data = response.data;
+        
+        if (data.error || !data.users || data.users.length === 0) {
+            return res.status(400).json({ error: 'Invalid Google Identity token' });
+        }
+        
+        const googleUser = data.users[0];
+        const email = googleUser.email;
+        const firebaseUid = googleUser.localId;
+        const displayName = googleUser.displayName || email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '');
+        
+        // Find or create user
+        let user = await User.findOne({ email });
+        if (!user) {
+            let uniqueUsername = displayName;
+            let count = 1;
+            while (await User.findOne({ username: uniqueUsername })) {
+                uniqueUsername = `${displayName}${count++}`;
+            }
+            
+            user = new User({
+                username: uniqueUsername,
+                email: email,
+                password: 'GOOGLE_OAUTH_LOGIN',
+                firebaseUid: firebaseUid
+            });
+            await user.save();
+        } else if (!user.firebaseUid) {
+            user.firebaseUid = firebaseUid;
+            await user.save();
+        }
+        
+        req.session.userId = user._id;
+        req.session.username = user.username;
+        
+        res.json({ success: true, message: 'Google Sign-In successful', username: user.username });
+    } catch (error) {
+        console.error('Google login error', error);
+        res.status(500).json({ error: 'Google Login backend verification failed' });
     }
 });
 
